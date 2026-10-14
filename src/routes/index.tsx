@@ -1,24 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { ArrowDown, Check, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { SiteShell, QuoteButton, Services, Process, FinalCTA, TrustStrip, sitePhoto, pageMeta } from '@/components/clean-site';
+export const Route = createFileRoute('/')({ head: () => pageMeta('Limpieza de ventanas y retiro de nieve','Cuidamos tu hogar y negocio en cada estación. Descubre nuestros servicios de limpieza de ventanas y retiro de nieve.'), component: Index });
+function Index() { return <SiteShell><section className="hero"><img className="hero-photo" src={sitePhoto} width={1536} height={1024} alt="Limpieza profesional de ventanas en una casa rodeada de nieve" fetchPriority="high"/><div className="container-site hero-inner"><div className="eyebrow"><Sparkles size={15}/>Un espacio cuidado, todo el año</div><h1>Ventanas impecables.<br/>Caminos <span>despejados.</span></h1><p className="hero-copy">Limpieza de ventanas y retiro de nieve para tu hogar o negocio. Tú disfruta tu espacio; nosotros cuidamos el resto.</p><div className="hero-actions"><QuoteButton/><Button variant="heroOutline" asChild><Link to="/servicios">Nuestros servicios<ArrowDown size={16}/></Link></Button></div><div className="hero-note"><Check size={14}/>Cuéntanos lo que necesitas. Sin compromiso.</div></div></section><TrustStrip/><section className="container-site section"><div className="section-heading"><div><div className="eyebrow">Lo que hacemos</div><h2>Dos servicios. Un mismo cuidado.</h2></div><p>Deja entrar la luz y deja fuera la nieve.<br/>Soluciones para cada temporada.</p></div><Services/></section><Process/><FinalCTA/></SiteShell>; }
