@@ -14,16 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          address: string
+          client_id: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          notes: string
+          service: string
+          starts_at: string
+          status: string
+          worker_id: string
+        }
+        Insert: {
+          address?: string
+          client_id: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string
+          service: string
+          starts_at: string
+          status?: string
+          worker_id: string
+        }
+        Update: {
+          address?: string
+          client_id?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string
+          service?: string
+          starts_at?: string
+          status?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          client_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          client_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      time_entries: {
+        Row: {
+          clock_in: string
+          clock_out: string | null
+          id: string
+          in_label: string | null
+          in_lat: number | null
+          in_lng: number | null
+          out_label: string | null
+          out_lat: number | null
+          out_lng: number | null
+          worker_id: string
+        }
+        Insert: {
+          clock_in?: string
+          clock_out?: string | null
+          id?: string
+          in_label?: string | null
+          in_lat?: number | null
+          in_lng?: number | null
+          out_label?: string | null
+          out_lat?: number | null
+          out_lng?: number | null
+          worker_id: string
+        }
+        Update: {
+          clock_in?: string
+          clock_out?: string | null
+          id?: string
+          in_label?: string | null
+          in_lat?: number | null
+          in_lng?: number | null
+          out_label?: string | null
+          out_lat?: number | null
+          out_lng?: number | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "worker" | "client"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +335,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "worker", "client"],
+    },
   },
 } as const
