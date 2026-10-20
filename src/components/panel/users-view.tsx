@@ -9,7 +9,7 @@ export function UsersView({ userId }: { userId: string }) {
   const { data: people = [] } = useProfiles();
   async function change(id: string, role: Role) {
     const { error } = await supabase.from("user_roles").update({ role }).eq("user_id", id);
-    if (error) return toast.error("No se pudo cambiar el rol.");
+    if (error) { toast.error("No se pudo cambiar el rol."); return; }
     toast.success("Rol actualizado");
     qc.invalidateQueries({ queryKey: ["profiles"] });
   }
