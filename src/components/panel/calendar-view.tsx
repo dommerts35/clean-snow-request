@@ -79,7 +79,7 @@ function ApptItem({ a, nameOf, role, showDate }: { a: Appt; nameOf: (id: string)
   );
 }
 
-function NewAppointment({ open, onOpenChange, role, userId, people, defaultDay }: { open: boolean; onOpenChange: (v: boolean) => void; role: Role; userId: string; people: { id: string; full_name: string; role: Role }[]; defaultDay?: Date }) {
+function NewAppointment({ open, onOpenChange, role, userId, people, defaultDay }: { open: boolean; onOpenChange: (v: boolean) => void; role: Role; userId: string; people: { id: string; full_name: string; role: Role }[]; defaultDay?: Date | undefined }) {
   const qc = useQueryClient();
   const clients = people.filter((p) => p.role === "client");
   const workers = people.filter((p) => p.role !== "client");

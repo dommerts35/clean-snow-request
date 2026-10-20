@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, Check, Download, Grid2X2, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Check, Download, Grid2X2, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, UserRound, X } from 'lucide-react';
+import { useSessionUser } from '@/hooks/use-account';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import heroPhoto from '@/assets/window-winter.jpg';
@@ -10,11 +11,12 @@ export function QuoteButton({ children = 'Solicitar presupuesto', service, class
  const open = useContext(QuoteContext);
  return <Button className={className} onClick={() => open(service)}>{children}<ArrowRight size={16}/></Button>;
 }
+function AccountLink() { const { user } = useSessionUser(); return user ? <Link to="/panel" className="account-link"><UserRound size={15} className="inline mr-1"/>Mi panel</Link> : <Link to="/auth" className="account-link"><UserRound size={15} className="inline mr-1"/>Acceder</Link>; }
 export function Brand() { return <Link to="/" className="brand" aria-label="Clara, inicio"><Sparkles className="brand-icon" strokeWidth={1.7}/><span>clara<span aria-hidden="true">.</span><small>Ventanas & nieve</small></span></Link>; }
 export function SiteShell({ children }: { children: ReactNode }) {
  const [menu, setMenu] = useState(false); const [open, setOpen] = useState(false); const [service, setService] = useState('Limpieza de ventanas');
  return <QuoteContext.Provider value={(value) => { setService(value || 'Limpieza de ventanas'); setOpen(true); }}>
- <header className="container-site site-header"><Brand/><nav aria-label="Navegación principal" className={`nav-links ${menu ? 'is-open' : ''}`}><Link to="/" activeOptions={{ exact: true }} onClick={() => setMenu(false)}>Inicio</Link><Link to="/servicios" onClick={() => setMenu(false)}>Servicios</Link><Link to="/nosotros" onClick={() => setMenu(false)}>Nosotros</Link><Link to="/contacto" onClick={() => setMenu(false)}>Contacto</Link></nav><QuoteButton className="header-cta"/><Button variant="ghost" size="icon" className="mobile-menu" aria-label={menu ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X/> : <Menu/>}</Button></header>
+ <header className="container-site site-header"><Brand/><nav aria-label="Navegación principal" className={`nav-links ${menu ? 'is-open' : ''}`}><Link to="/" activeOptions={{ exact: true }} onClick={() => setMenu(false)}>Inicio</Link><Link to="/servicios" onClick={() => setMenu(false)}>Servicios</Link><Link to="/nosotros" onClick={() => setMenu(false)}>Nosotros</Link><Link to="/contacto" onClick={() => setMenu(false)}>Contacto</Link><AccountLink/></nav><QuoteButton className="header-cta"/><Button variant="ghost" size="icon" className="mobile-menu" aria-label={menu ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X/> : <Menu/>}</Button></header>
  <main>{children}</main><footer className="footer"><div className="container-site footer-inner"><Brand/><p>Cuidamos los detalles. En cada estación.</p><p>© {new Date().getFullYear()} Clara.</p></div></footer>
  <Dialog open={open} onOpenChange={setOpen}><DialogContent className="quote-dialog"><DialogHeader><DialogTitle>Tu próximo espacio impecable</DialogTitle><DialogDescription>Cuéntanos qué necesitas para preparar tu solicitud.</DialogDescription></DialogHeader><QuoteForm initialService={service}/></DialogContent></Dialog>
  </QuoteContext.Provider>;

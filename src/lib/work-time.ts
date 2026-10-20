@@ -11,7 +11,7 @@ export const DEMO_LOCATIONS: DemoLocation[] = [
 
 export function pickDemoLocation(index: number): DemoLocation {
   const n = DEMO_LOCATIONS.length;
-  return DEMO_LOCATIONS[((index % n) + n) % n];
+  return DEMO_LOCATIONS[((index % n) + n) % n]!;
 }
 
 /** Minutos trabajados en un fichaje; si sigue abierto, cuenta hasta `now`. */
