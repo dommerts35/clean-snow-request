@@ -128,6 +128,39 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_requests: {
+        Row: {
+          created_at: string
+          details: string
+          email: string
+          id: string
+          location: string
+          name: string
+          service: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          details: string
+          email: string
+          id?: string
+          location: string
+          name: string
+          service: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string
+          email?: string
+          id?: string
+          location?: string
+          name?: string
+          service?: string
+          status?: string
+        }
+        Relationships: []
+      }
       time_entries: {
         Row: {
           clock_in: string
@@ -198,6 +231,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_account: { Args: { _user_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
