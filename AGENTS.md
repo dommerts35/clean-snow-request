@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Keep shared navigation, service presentation, and quote interactions in a reusable site module so public pages stay consistent.
-- Budget requests currently download a text document in the browser; do not imply they are sent without connecting a delivery service.
+- Budget requests are saved to the database and shown to staff in the panel "Solicitudes" tab; no email notification is sent.
 - Give each public content route its own Spanish page metadata for distinct search and social previews.
 - Account areas live under the `_authenticated` layout (`/panel`) with role-based tabs; roles are kept in a separate roles table and enforced by database policies, since UI checks alone are bypassable.
 - The very first account to sign up becomes administrator; later sign-ups are clients until an admin changes their role — gives the owner a way in without seeding users.
