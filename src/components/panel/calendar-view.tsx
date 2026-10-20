@@ -2,7 +2,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isSameDay } from "date-fns";
 import { es } from "date-fns/locale";
-import { Plus, MapPin, Clock } from "lucide-react";
+import { Plus, MapPin, Clock, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar } from "@/components/ui/calendar";
@@ -69,9 +69,17 @@ export function CalendarView({ role, userId }: { role: Role; userId: string }) {
 
 type Appt = { id: string; client_id: string; worker_id: string; service: string; starts_at: string; duration_minutes: number; address: string; notes: string; status: string };
 function ApptItem({ a, nameOf, role, showDate }: { a: Appt; nameOf: (id: string) => string; role: Role; showDate?: boolean }) {
+  const qc = useQueryClient();
+  async function remove() {
+    if (!confirm("¿Eliminar esta cita?")) return;
+    const { error } = await supabase.from("appointments").delete().eq("id", a.id);
+    if (error) return toast.error("No se pudo eliminar la cita.");
+    toast.success("Cita eliminada");
+    qc.invalidateQueries({ queryKey: ["appointments"] });
+  }
   return (
     <div className="appt">
-      <div className="appt-top"><strong>{a.service}</strong><span className="badge-soft">{a.status}</span></div>
+      <div className="appt-top"><strong>{a.service}</strong><span className="flex items-center gap-1"><span className="badge-soft">{a.status}</span>{role === "admin" && <Button variant="ghost" size="icon" aria-label="Eliminar cita" onClick={remove}><Trash2 size={15} /></Button>}</span></div>
       <div className="appt-meta"><Clock size={13} />{format(new Date(a.starts_at), showDate ? "d MMM, HH:mm" : "HH:mm", { locale: es })} · {a.duration_minutes} min</div>
       {a.address && <div className="appt-meta"><MapPin size={13} />{a.address}</div>}
       <div className="appt-meta">{role === "client" ? `Trabajador: ${nameOf(a.worker_id)}` : `Cliente: ${nameOf(a.client_id)}${role === "admin" ? ` · Trabajador: ${nameOf(a.worker_id)}` : ""}`}</div>
