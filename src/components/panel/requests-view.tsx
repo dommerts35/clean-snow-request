@@ -19,13 +19,13 @@ export function RequestsView({ role }: { role: Role }) {
   });
   async function setStatus(id: string, status: string) {
     const { error } = await supabase.from("quote_requests").update({ status }).eq("id", id);
-    if (error) return toast.error("No se pudo actualizar.");
+    if (error) { toast.error("No se pudo actualizar."); return; }
     qc.invalidateQueries({ queryKey: ["quote_requests"] });
   }
   async function remove(id: string) {
     if (!confirm("¿Eliminar esta solicitud?")) return;
     const { error } = await supabase.from("quote_requests").delete().eq("id", id);
-    if (error) return toast.error("No se pudo eliminar.");
+    if (error) { toast.error("No se pudo eliminar."); return; }
     toast.success("Solicitud eliminada");
     qc.invalidateQueries({ queryKey: ["quote_requests"] });
   }
