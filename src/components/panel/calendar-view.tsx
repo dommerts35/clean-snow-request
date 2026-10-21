@@ -73,7 +73,7 @@ function ApptItem({ a, nameOf, role, showDate }: { a: Appt; nameOf: (id: string)
   async function remove() {
     if (!confirm("¿Eliminar esta cita?")) return;
     const { error } = await supabase.from("appointments").delete().eq("id", a.id);
-    if (error) return toast.error("No se pudo eliminar la cita.");
+    if (error) { toast.error("No se pudo eliminar la cita."); return; }
     toast.success("Cita eliminada");
     qc.invalidateQueries({ queryKey: ["appointments"] });
   }
