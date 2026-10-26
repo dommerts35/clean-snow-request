@@ -110,3 +110,4 @@ main:focus { outline: none; }
  .nav-links.is-open { gap: 4px; } .nav-links.is-open a { min-height: 44px; display: flex; align-items: center; width: 100%; }
 }
 @media(prefers-reduced-motion:reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+.snow-image { object-position: center 60%; }
