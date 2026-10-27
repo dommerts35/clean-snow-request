@@ -20,6 +20,7 @@ export function renderErrorPage(): string {
     <div class="card">
       <h1>Esta página no se pudo cargar</h1>
       <p>Algo salió mal por nuestra parte. Puedes intentarlo de nuevo o volver al inicio.</p>
+      <p lang="en">This page couldn’t load. Something went wrong on our end — try again or head back home.</p>
       <div class="actions">
         <button class="primary" onclick="location.reload()">Intentar de nuevo</button>
         <a class="secondary" href="/">Volver al inicio</a>

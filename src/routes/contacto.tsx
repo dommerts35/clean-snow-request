@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { SiteShell, QuoteForm, pageMeta } from '@/components/clean-site';
-export const Route = createFileRoute('/contacto')({head: () => pageMeta('Contacto y presupuesto','Prepara tu solicitud de presupuesto para limpieza de ventanas o retiro de nieve con Clara.'),component: Contacto});
-function Contacto() { return <SiteShell><section className="container-site"><div className="page-heading"><div className="eyebrow">Hablemos de tu espacio</div><h1>¿En qué podemos ayudarte?</h1><p>Completa los detalles de tu propiedad y del servicio que buscas para preparar una solicitud de presupuesto.</p></div><div className="contact-form"><QuoteForm/></div></section></SiteShell>; }
+import { useI18n, usePageMeta } from '@/lib/i18n';
+export const Route = createFileRoute('/contacto')({head: () => pageMeta('contact'),component: Contacto});
+function Contacto() { usePageMeta('contact'); const { t } = useI18n(); const c = t.contact; return <SiteShell><section className="container-site"><div className="page-heading"><div className="eyebrow">{c.eyebrow}</div><h1>{c.h1}</h1><p>{c.p}</p></div><div className="contact-form"><QuoteForm/></div></section></SiteShell>; }
