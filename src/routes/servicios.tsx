@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { SiteShell, Services, Process, FinalCTA, pageMeta } from '@/components/clean-site';
-export const Route = createFileRoute('/servicios')({head: () => pageMeta('Nuestros servicios','Limpieza de cristales interiores y exteriores y retiro de nieve en entradas, caminos y espacios comerciales.'),component: Servicios});
-function Servicios() { return <SiteShell><section className="container-site"><div className="page-heading"><div className="eyebrow">Servicios Clara</div><h1>Cuidamos tu espacio en cada estación.</h1><p>Una solución para dejar entrar la luz. Otra para mantener el camino libre. Elige el servicio que necesita tu propiedad.</p></div><div className="pb-16"><Services/></div></section><Process/><FinalCTA/></SiteShell>; }
+import { useI18n, usePageMeta } from '@/lib/i18n';
+export const Route = createFileRoute('/servicios')({head: () => pageMeta('services'),component: Servicios});
+function Servicios() { usePageMeta('services'); const { t } = useI18n(); const s = t.servicesPage; return <SiteShell><section className="container-site"><div className="page-heading"><div className="eyebrow">{s.eyebrow}</div><h1>{s.h1}</h1><p>{s.p}</p></div><div className="pb-16"><Services/></div></section><Process/><FinalCTA/></SiteShell>; }
