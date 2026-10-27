@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SiteShell, pageMeta } from "@/components/clean-site";
+import { useI18n, usePageMeta } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
-  head: () => pageMeta("Acceder a tu cuenta", "Inicia sesión o crea tu cuenta de cliente para ver tus citas y hablar con nuestro equipo."),
+  head: () => pageMeta("auth"),
   component: AuthPage,
 });
 
 function AuthPage() {
   const navigate = useNavigate();
+  usePageMeta("auth"); const { t: tr } = useI18n(); const a = tr.auth;
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
@@ -33,7 +35,7 @@ function AuthPage() {
     setBusy(true);
     if (mode === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) toast.error("Correo o contraseña incorrectos.");
+      if (error) toast.error(a.bad);
     } else {
       const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/panel", data: { full_name: String(f.get("name")) } } });
       if (error) toast.error(error.message);
@@ -44,33 +46,33 @@ function AuthPage() {
 
   async function social(provider: "google" | "lovable") {
     const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin + "/auth" });
-    if (result.error) toast.error("No se pudo iniciar sesión.");
+    if (result.error) toast.error(a.socialFail);
   }
 
   return (
     <SiteShell>
       <section className="container-site section">
         <div className="auth-card">
-          <div className="eyebrow">Área privada</div>
-          <h1>{mode === "login" ? "Bienvenido de nuevo" : "Crea tu cuenta"}</h1>
-          <p className="muted">Clientes, trabajadores y administradores entran desde aquí.</p>
+          <div className="eyebrow">{a.eyebrow}</div>
+          <h1>{mode === "login" ? a.login : a.signup}</h1>
+          <p className="muted">{a.intro}</p>
           {sent ? (
-            <p className="success-notice" role="status">Revisa tu correo y confirma tu cuenta para entrar.</p>
+            <p className="success-notice" role="status">{a.sent}</p>
           ) : (
             <form onSubmit={submit} className="auth-form">
-              {mode === "signup" && <div><Label htmlFor="name">Nombre</Label><Input id="name" name="name" required autoComplete="name" /></div>}
-              <div><Label htmlFor="email">Correo electrónico</Label><Input id="email" name="email" type="email" required autoComplete="email" /></div>
-              <div><Label htmlFor="password">Contraseña</Label><Input id="password" name="password" type="password" minLength={6} required autoComplete={mode === "login" ? "current-password" : "new-password"} /></div>
-              <Button type="submit" disabled={busy}>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</Button>
+              {mode === "signup" && <div><Label htmlFor="name">{a.name}</Label><Input id="name" name="name" required autoComplete="name" /></div>}
+              <div><Label htmlFor="email">{a.email}</Label><Input id="email" name="email" type="email" required autoComplete="email" /></div>
+              <div><Label htmlFor="password">{a.password}</Label><Input id="password" name="password" type="password" minLength={6} required autoComplete={mode === "login" ? "current-password" : "new-password"} /></div>
+              <Button type="submit" disabled={busy}>{mode === "login" ? a.doLogin : a.doSignup}</Button>
             </form>
           )}
-          <div className="auth-divider"><span>o</span></div>
+          <div className="auth-divider"><span>{a.or}</span></div>
           <div className="auth-social">
-            <Button variant="outline" onClick={() => social("google")}>Continuar con Google</Button>
+            <Button variant="outline" onClick={() => social("google")}>{a.google}</Button>
             <button type="button" className="lovable-auth-button" onClick={() => social("lovable")}>Continue with Lovable</button>
           </div>
           <button type="button" className="auth-switch" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setSent(false); }}>
-            {mode === "login" ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión"}
+            {mode === "login" ? a.toSignup : a.toLogin}
           </button>
         </div>
       </section>
