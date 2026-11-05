@@ -15,7 +15,7 @@ export function QuoteButton({ children, service, className, label }: { children?
   return <Button className={className} aria-label={label} onClick={() => open(service)}>{children ?? t.quote}<ArrowRight size={16} aria-hidden="true"/></Button>;
 }
 function AccountLink({ onClick }: { onClick: () => void }) { const { user } = useSessionUser(); const { t } = useI18n(); return user ? <Link to="/panel" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.panel}</Link> : <Link to="/auth" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.login}</Link>; }
-export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><Sparkles className="brand-icon" strokeWidth={1.7} aria-hidden="true"/><span aria-hidden="true">clara<span>.</span><small>{t.brandTag}</small></span></Link>; }
+export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><Sparkles className="brand-icon" strokeWidth={1.7} aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span></Link>; }
 export function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang } = useI18n();
   return <div role="group" aria-label="Idioma / Language" className={`lang-switch ${className}`}>
@@ -37,7 +37,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return <QuoteContext.Provider value={(value) => { setService(value || 'Limpieza de ventanas'); setOpen(true); }}>
   <a href="#contenido" className="skip-link">{t.skip}</a>
   <header className="container-site site-header"><Brand/><nav id="menu-principal" aria-label={t.nav.main} className={`nav-links ${menu ? 'is-open' : ''}`}><Link to="/" activeOptions={{ exact: true }} onClick={close}>{t.nav.home}</Link><Link to="/servicios" onClick={close}>{t.nav.services}</Link><Link to="/nosotros" onClick={close}>{t.nav.about}</Link><Link to="/contacto" onClick={close}>{t.nav.contact}</Link><AccountLink onClick={close}/></nav><LangSwitch/><QuoteButton className="header-cta"/><Button ref={toggleRef} variant="ghost" size="icon" className="mobile-menu min-h-11 min-w-11" aria-label={menu ? t.nav.close : t.nav.open} aria-expanded={menu} aria-controls="menu-principal" onClick={() => setMenu(!menu)}>{menu ? <X aria-hidden="true"/> : <Menu aria-hidden="true"/>}</Button></header>
-  <main id="contenido" tabIndex={-1}>{children}</main><footer className="footer"><div className="container-site footer-inner"><Brand/><p>{t.footer}</p><p>© {new Date().getFullYear()} Clara.</p></div></footer>
+  <main id="contenido" tabIndex={-1}>{children}</main><footer className="footer"><div className="container-site footer-inner"><Brand/><p>{t.footer}</p><p>© {new Date().getFullYear()} ClearView Solutions.</p></div></footer>
   <Dialog open={open} onOpenChange={setOpen}><DialogContent className="quote-dialog"><DialogHeader><DialogTitle>{t.dialog.title}</DialogTitle><DialogDescription>{t.dialog.desc}</DialogDescription></DialogHeader><QuoteForm initialService={service}/></DialogContent></Dialog>
   </QuoteContext.Provider>;
 }
@@ -73,4 +73,4 @@ export function FinalCTA() { const { t } = useI18n(); return <section className=
 export function TrustStrip() { const { t } = useI18n(); const icons = [ShieldCheck, Sparkles, Leaf, Snowflake]; return <section className="trust-strip" aria-label={t.trust.label}><ul className="container-site trust-inner">{t.trust.items.map((text, i) => { const I = icons[i] ?? icons[0]!; return <li className="trust-item" key={i}><I strokeWidth={1.6} aria-hidden="true"/><span>{text}</span></li>; })}</ul></section>; }
 export const sitePhoto = heroPhoto;
 /** SSR head uses Spanish (default); usePageMeta swaps title/description on the client. */
-export function pageMeta(key: keyof Dict['meta']) { const [title, description] = dictionaries.es.meta[key]; return { meta: [{title: `${title} | Clara`},{name:'description',content:description},{property:'og:title',content:`${title} | Clara`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] }; }
+export function pageMeta(key: keyof Dict['meta']) { const [title, description] = dictionaries.es.meta[key]; return { meta: [{title: `${title} | ClearView Solutions`},{name:'description',content:description},{property:'og:title',content:`${title} | ClearView Solutions`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] }; }

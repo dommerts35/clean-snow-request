@@ -34,7 +34,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
   const clients = useMemo(() => people.filter((p) => p.role === "client"), [people]);
   const thread = msgs.filter((m) => m.client_id === active);
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length, typing]);
-  const nameOf = (id: string | null) => !id ? "Equipo Clara" : (id === userId ? "Tú" : people.find((p) => p.id === id)?.full_name || "Equipo Clara");
+  const nameOf = (id: string | null) => !id ? "Equipo ClearView" : (id === userId ? "Tú" : people.find((p) => p.id === id)?.full_name || "Equipo ClearView");
 
   async function send(e: FormEvent) {
     e.preventDefault();
