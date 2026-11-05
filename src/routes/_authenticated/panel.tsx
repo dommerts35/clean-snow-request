@@ -14,7 +14,7 @@ import { UsersView } from "@/components/panel/users-view";
 import { RequestsView } from "@/components/panel/requests-view";
 
 export const Route = createFileRoute("/_authenticated/panel")({
-  head: () => ({ meta: [{ title: "Mi panel | Clara" }, { name: "description", content: "Tus citas, mensajes, estadísticas y fichajes en Clara." }, { property: "og:title", content: "Mi panel | Clara" }, { property: "og:description", content: "Área privada de clientes y equipo de Clara." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Mi panel | ClearView Solutions" }, { name: "description", content: "Tus citas, mensajes, estadísticas y fichajes en ClearView Solutions." }, { property: "og:title", content: "Mi panel | ClearView Solutions" }, { property: "og:description", content: "Área privada de clientes y equipo de ClearView Solutions." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Panel,
 });
 

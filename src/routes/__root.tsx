@@ -83,9 +83,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Clara | Ventanas y nieve" },
+      { title: "ClearView Solutions | Ventanas y nieve" },
       { name: "description", content: "Limpieza de ventanas y retiro de nieve para hogares y negocios." },
-      { property: "og:title", content: "Clara | Ventanas y nieve" },
+      { property: "og:title", content: "ClearView Solutions | Ventanas y nieve" },
       { property: "og:description", content: "Cuidamos tu propiedad en cada estación." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
