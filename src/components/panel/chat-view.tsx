@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Send } from "lucide-react";
+import { Send, Bot } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { requestAssistantReply } from "@/lib/assistant.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +20,8 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
   });
   const [active, setActive] = useState<string | null>(staff ? null : userId);
   const [text, setText] = useState("");
+  const [typing, setTyping] = useState(false);
+  const askAssistant = useServerFn(requestAssistantReply);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,15 +33,19 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
 
   const clients = useMemo(() => people.filter((p) => p.role === "client"), [people]);
   const thread = msgs.filter((m) => m.client_id === active);
-  useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length]);
-  const nameOf = (id: string) => (id === userId ? "Tú" : people.find((p) => p.id === id)?.full_name || "Equipo Clara");
+  useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length, typing]);
+  const nameOf = (id: string | null) => !id ? "Equipo Clara" : (id === userId ? "Tú" : people.find((p) => p.id === id)?.full_name || "Equipo Clara");
 
   async function send(e: FormEvent) {
     e.preventDefault();
     if (!text.trim() || !active) return;
     const body = text.trim(); setText("");
-    await supabase.from("messages").insert({ client_id: active, sender_id: userId, body });
+    const { error } = await supabase.from("messages").insert({ client_id: active, sender_id: userId, body });
     qc.invalidateQueries({ queryKey: ["messages"] });
+    if (error || staff) return;
+    setTyping(true);
+    try { await askAssistant({ data: { clientId: active } }); } catch (err) { console.error(err); }
+    finally { setTyping(false); qc.invalidateQueries({ queryKey: ["messages"] }); }
   }
 
   return (
@@ -55,13 +63,14 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
       <div className="panel-card chat-box">
         <h3 className="panel-h">{staff ? (active ? `Conversación con ${people.find((p) => p.id === active)?.full_name ?? ""}` : "Elige un cliente") : "Servicio al cliente"}</h3>
         <div className="chat-messages">
-          {active && thread.length === 0 && <p className="muted">{staff ? "Aún no hay mensajes." : "Escríbenos y nuestro equipo te responderá aquí."}</p>}
+          {active && thread.length === 0 && <p className="muted">{staff ? "Aún no hay mensajes." : "Escríbenos y nuestro asistente te responderá enseguida; si hace falta, el equipo continúa la conversación."}</p>}
           {thread.map((m) => (
-            <div key={m.id} className={`bubble ${m.sender_id === userId ? "mine" : ""}`}>
-              <small>{nameOf(m.sender_id)} · {format(new Date(m.created_at), "d/MM HH:mm")}</small>
+            <div key={m.id} className={`bubble ${m.sender_id === userId ? "mine" : ""} ${m.is_ai ? "is-ai" : ""}`}>
+              <small>{m.is_ai ? <><span className="ai-badge"><Bot size={12} aria-hidden="true" />IA</span> Asistente IA</> : nameOf(m.sender_id)} · {format(new Date(m.created_at), "d/MM HH:mm")}</small>
               <p>{m.body}</p>
             </div>
           ))}
+          {typing && <div className="bubble is-ai typing" role="status"><small><span className="ai-badge"><Bot size={12} aria-hidden="true" />IA</span> Asistente IA</small><p className="typing-dots" aria-label="El asistente está escribiendo"><span /><span /><span /></p></div>}
           <div ref={endRef} />
         </div>
         {active && (
