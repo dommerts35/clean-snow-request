@@ -25,7 +25,7 @@ export const requestAssistantReply = createServerFn({ method: "POST" })
     const history = [...rows].reverse();
 
     const decision = shouldReply(history, data.clientId, new Date());
-    if (!decision.ok) return { replied: false, reason: decision.reason };
+    if (!decision.ok) return { replied: false, reason: decision.reason ?? "skip" };
 
     const since = new Date(Date.now() - AI_RATE_WINDOW_MIN * 60_000).toISOString();
     const { count } = await supabaseAdmin.from("messages").select("id", { count: "exact", head: true })
