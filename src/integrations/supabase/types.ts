@@ -74,21 +74,24 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
-          sender_id: string
+          is_ai: boolean
+          sender_id: string | null
         }
         Insert: {
           body: string
           client_id: string
           created_at?: string
           id?: string
-          sender_id: string
+          is_ai?: boolean
+          sender_id?: string | null
         }
         Update: {
           body?: string
           client_id?: string
           created_at?: string
           id?: string
-          sender_id?: string
+          is_ai?: boolean
+          sender_id?: string | null
         }
         Relationships: [
           {
