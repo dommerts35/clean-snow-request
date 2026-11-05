@@ -120,3 +120,12 @@ main:focus { outline: none; }
 .lang-switch button[aria-pressed=true] { color: var(--primary-text); text-decoration: underline; text-underline-offset: 4px; }
 .lang-switch button:hover { color: var(--foreground); }
 @media(max-width:640px) { .lang-switch button { min-width: 44px; min-height: 44px; } }
+
+/* AI assistant messages */
+.bubble.is-ai { background: var(--card); border: 1px dashed var(--border); }
+.ai-badge { display: inline-flex; align-items: center; gap: 3px; padding: 0 6px; margin-right: 4px; border-radius: 999px; background: var(--foreground); color: var(--background); font-size: 11px; font-weight: 700; vertical-align: middle; }
+.typing-dots { display: flex; gap: 4px; padding: 6px 0 2px; }
+.typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted-foreground); animation: typing-blink 1.2s infinite ease-in-out; }
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes typing-blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
