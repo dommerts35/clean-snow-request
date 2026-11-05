@@ -15,3 +15,4 @@
 - Account areas live under the `_authenticated` layout (`/panel`) with role-based tabs; roles are kept in a separate roles table and enforced by database policies, since UI checks alone are bypassable.
 - The very first account to sign up becomes administrator; later sign-ups are clients until an admin changes their role — gives the owner a way in without seeding users.
 - Clock-in locations use demo coordinates from `src/lib/work-time.ts`, not the device location, by owner choice.
+- The AI chat assistant runs in a protected server function that inserts replies with the admin client (is_ai=true, sender_id null); its knowledge lives in one editable prompt constant, and handoff rules are a pure tested module — keeps behaviour editable and auditable.
