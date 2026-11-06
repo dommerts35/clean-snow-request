@@ -4,8 +4,25 @@ export type Lang = 'es' | 'en';
 export const LANG_KEY = 'clara-lang';
 
 /** Stored service values (database) — never translate these. */
-export const SERVICE_VALUES = ['Limpieza de ventanas', 'Retiro de nieve', 'Ambos servicios'] as const;
+export const SERVICE_VALUES = [
+  'Limpieza de ventanas (residencial y comercial)',
+  'Lavado a presión',
+  'Limpieza de hogar',
+  'Limpieza comercial y de negocios',
+  'Varios servicios / paquete personalizado',
+] as const;
 export type ServiceValue = (typeof SERVICE_VALUES)[number];
+
+/** Stored property-type values (database) — never translate these. */
+export const PROPERTY_VALUES = [
+  'Casa / apartamento',
+  'Oficina / edificio corporativo',
+  'Tienda / local comercial',
+  'Restaurante / hostelería',
+  'Industrial / almacén',
+  'Otro',
+] as const;
+export type PropertyValue = (typeof PROPERTY_VALUES)[number];
 
 const es = {
   skip: 'Saltar al contenido',
@@ -15,13 +32,27 @@ const es = {
   quote: 'Solicitar presupuesto',
   dialog: { title: 'Tu próximo espacio impecable', desc: 'Cuéntanos qué necesitas para preparar tu solicitud.' },
   form: {
-    req: '(obligatorio)', name: 'Nombre', namePh: 'Tu nombre', email: 'Correo electrónico', emailPh: 'tu@correo.com',
-    service: 'Servicio', location: 'Ubicación', locationPh: 'Ciudad o zona', details: 'Cuéntanos un poco más',
-    detailsPh: 'Tipo de propiedad, tamaño y fecha deseada…', send: 'Enviar solicitud', sending: 'Enviando…',
+    req: '(obligatorio)', opt: '(opcional)', name: 'Nombre', namePh: 'Tu nombre', email: 'Correo electrónico', emailPh: 'tu@correo.com',
+    service: 'Servicio', property: 'Tipo de propiedad o negocio', location: 'Ubicación', locationPh: 'Ciudad o zona', details: 'Detalles del proyecto',
+    detailsPh: 'Cuéntanos brevemente sobre tu espacio o negocio (p. ej., número de pisos, tamaño aproximado o frecuencia de limpieza deseada)', send: 'Enviar solicitud', sending: 'Enviando…',
     ok: '¡Solicitud enviada! Nuestro equipo te contactará pronto.',
     fail: 'No pudimos enviar tu solicitud. Revisa tu conexión e inténtalo de nuevo.',
   },
-  serviceLabels: { 'Limpieza de ventanas': 'Limpieza de ventanas', 'Retiro de nieve': 'Retiro de nieve', 'Ambos servicios': 'Ambos servicios' } as Record<ServiceValue, string>,
+  serviceLabels: {
+    'Limpieza de ventanas (residencial y comercial)': 'Limpieza de ventanas (residencial y comercial)',
+    'Lavado a presión': 'Lavado a presión',
+    'Limpieza de hogar': 'Limpieza residencial / de hogar',
+    'Limpieza comercial y de negocios': 'Limpieza comercial y de negocios',
+    'Varios servicios / paquete personalizado': 'Varios servicios / paquete personalizado',
+  } as Record<ServiceValue, string>,
+  propertyLabels: {
+    'Casa / apartamento': 'Casa / apartamento residencial',
+    'Oficina / edificio corporativo': 'Oficina / edificio corporativo',
+    'Tienda / local comercial': 'Tienda / local comercial',
+    'Restaurante / hostelería': 'Restaurante / hostelería',
+    'Industrial / almacén': 'Industrial / almacén',
+    'Otro': 'Otro',
+  } as Record<PropertyValue, string>,
   services: {
     consult: 'Consultar servicio', consultLabel: 'Consultar servicio: ',
     windows: { alt: 'Profesional limpiando los ventanales de una casa en un día de invierno', text: 'Más luz, mejores vistas. Cuidamos tus cristales por dentro y por fuera, con atención a cada detalle.', features: ['Hogares y negocios', 'Interior y exterior'] },
@@ -56,13 +87,27 @@ const en: Dict = {
   quote: 'Get a free quote',
   dialog: { title: 'Let’s get your property spotless', desc: 'Tell us what you need and we’ll put your quote together.' },
   form: {
-    req: '(required)', name: 'Name', namePh: 'Your name', email: 'Email', emailPh: 'you@example.com',
-    service: 'Service', location: 'Location', locationPh: 'Town or area (e.g. Montclair, NJ)', details: 'Tell us a bit more',
-    detailsPh: 'Property type, size and preferred date…', send: 'Send request', sending: 'Sending…',
+    req: '(required)', opt: '(optional)', name: 'Name', namePh: 'Your name', email: 'Email', emailPh: 'you@example.com',
+    service: 'Service', property: 'Property / Business Type', location: 'Location', locationPh: 'Town or area (e.g. Montclair, NJ)', details: 'Project Details',
+    detailsPh: 'Tell us briefly about your space or business (e.g., number of stories, approximate size, or preferred cleaning frequency)', send: 'Send request', sending: 'Sending…',
     ok: 'Request sent! Our team will be in touch shortly.',
     fail: 'We couldn’t send your request. Please check your connection and try again.',
   },
-  serviceLabels: { 'Limpieza de ventanas': 'Window cleaning', 'Retiro de nieve': 'Snow removal', 'Ambos servicios': 'Both services' },
+  serviceLabels: {
+    'Limpieza de ventanas (residencial y comercial)': 'Window Cleaning (Residential & Commercial)',
+    'Lavado a presión': 'Power Washing / Pressure Washing',
+    'Limpieza de hogar': 'Residential / House Cleaning',
+    'Limpieza comercial y de negocios': 'Commercial & Business Cleaning',
+    'Varios servicios / paquete personalizado': 'Multiple Services / Custom Package',
+  },
+  propertyLabels: {
+    'Casa / apartamento': 'Residential Home / Apartment',
+    'Oficina / edificio corporativo': 'Office / Corporate Building',
+    'Tienda / local comercial': 'Retail / Storefront',
+    'Restaurante / hostelería': 'Restaurant / Hospitality',
+    'Industrial / almacén': 'Industrial / Warehouse',
+    'Otro': 'Other',
+  },
   services: {
     consult: 'Learn more', consultLabel: 'Ask about: ',
     windows: { alt: 'Professional cleaning the large windows of a home on a winter day', text: 'More light, better views. We clean your glass inside and out, with care for every detail.', features: ['Homes and businesses', 'Interior and exterior'] },

@@ -39,8 +39,8 @@ export function RequestsView({ role }: { role: Role }) {
               <option value="nueva">Nueva</option><option value="contactada">Contactada</option><option value="cerrada">Cerrada</option>
             </select>
           </div>
-          <div className="appt-meta">{format(new Date(r.created_at), "d MMM yyyy, HH:mm", { locale: es })} · <a href={`mailto:${r.email}`}>{r.email}</a> · {r.location}</div>
-          <p className="appt-meta" style={{ whiteSpace: "pre-wrap" }}>{r.details}</p>
+          <div className="appt-meta">{format(new Date(r.created_at), "d MMM yyyy, HH:mm", { locale: es })} · <a href={`mailto:${r.email}`}>{r.email}</a> · {r.location}{r.property_type ? ` · ${r.property_type}` : ""}</div>
+          {r.details && <p className="appt-meta" style={{ whiteSpace: "pre-wrap" }}>{r.details}</p>}
           {role === "admin" && <Button variant="ghost" size="sm" onClick={() => remove(r.id)}><Trash2 size={14} />Eliminar</Button>}
         </div>
       ))}
