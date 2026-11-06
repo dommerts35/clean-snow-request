@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { SERVICE_VALUES, dictionaries, useI18n, type Dict, type ServiceValue } from '@/lib/i18n';
+import logoUrl from '@/assets/logo.svg';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 
@@ -15,7 +16,7 @@ export function QuoteButton({ children, service, className, label }: { children?
   return <Button className={className} aria-label={label} onClick={() => open(service)}>{children ?? t.quote}<ArrowRight size={16} aria-hidden="true"/></Button>;
 }
 function AccountLink({ onClick }: { onClick: () => void }) { const { user } = useSessionUser(); const { t } = useI18n(); return user ? <Link to="/panel" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.panel}</Link> : <Link to="/auth" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.login}</Link>; }
-export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><Sparkles className="brand-icon" strokeWidth={1.7} aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span></Link>; }
+export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><img src={logoUrl} className="brand-icon" width={415} height={326} alt="" aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span></Link>; }
 export function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang } = useI18n();
   return <div role="group" aria-label="Idioma / Language" className={`lang-switch ${className}`}>
