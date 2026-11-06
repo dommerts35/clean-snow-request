@@ -16,3 +16,4 @@
 - The very first account to sign up becomes administrator; later sign-ups are clients until an admin changes their role — gives the owner a way in without seeding users.
 - Clock-in locations use demo coordinates from `src/lib/work-time.ts`, not the device location, by owner choice.
 - The AI chat assistant runs in a protected server function that inserts replies with the admin client (is_ai=true, sender_id null); its knowledge lives in one editable prompt constant, and handoff rules are a pure tested module — keeps behaviour editable and auditable.
+- The brand mark is `src/assets/logo.svg`; `public/favicon.svg` is a square, padded derivative of it (not a copy), so regenerate the favicon whenever the mark changes.
