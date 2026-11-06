@@ -139,6 +139,7 @@ export type Database = {
           id: string
           location: string
           name: string
+          property_type: string
           service: string
           status: string
         }
@@ -149,6 +150,7 @@ export type Database = {
           id?: string
           location: string
           name: string
+          property_type?: string
           service: string
           status?: string
         }
@@ -159,6 +161,7 @@ export type Database = {
           id?: string
           location?: string
           name?: string
+          property_type?: string
           service?: string
           status?: string
         }
