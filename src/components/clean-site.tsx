@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, Check, Send, Grid2X2, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, UserRound, X } from 'lucide-react';
+import { ArrowRight, Building2, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
 import { useSessionUser } from '@/hooks/use-account';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,9 @@ import { PROPERTY_VALUES, SERVICE_VALUES, dictionaries, useI18n, type Dict, type
 import logoUrl from '@/assets/logo.svg';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
+import powerPhoto from '@/assets/power-washing.jpg';
+import housePhoto from '@/assets/house-cleaning.jpg';
+import commercialPhoto from '@/assets/commercial-cleaning.jpg';
 
 const QuoteContext = createContext<(service?: ServiceValue) => void>(() => {});
 export function QuoteButton({ children, service, className, label }: { children?: ReactNode; service?: ServiceValue; className?: string; label?: string }) {
@@ -69,8 +72,8 @@ export function QuoteForm({ initialService = SERVICE_VALUES[0] }: { initialServi
 }
 export function Services() {
   const { t } = useI18n(); const s = t.services;
-  const cards = [{ value: 'Limpieza de ventanas (residencial y comercial)' as const, icon: Grid2X2, img: heroPhoto, c: s.windows, cls: '' }, { value: 'Varios servicios / paquete personalizado' as const, icon: Snowflake, img: snowPhoto, c: s.snow, cls: 'snow-image' }];
-  return <div className="service-grid">{cards.map(({ value, icon: Icon, img, c, cls }) => { const title = t.serviceLabels[value]; return <article className="service-card" key={value}><img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`service-image ${cls}`}/><div className="service-body"><div className="service-title"><Icon size={25} strokeWidth={1.5} aria-hidden="true"/><h3>{title}</h3></div><p>{c.text}</p><ul className="service-list">{c.features.map(f => <li key={f}><Check aria-hidden="true"/>{f}</li>)}</ul><QuoteButton service={value} label={`${s.consultLabel}${title}`}>{s.consult}</QuoteButton></div></article>; })}</div>;
+  const cards = [{ value: 'Limpieza de ventanas (residencial y comercial)' as const, icon: Grid2X2, img: heroPhoto, cls: '' }, { value: 'Lavado a presión' as const, icon: SprayCan, img: powerPhoto, cls: ' photo-center' }, { value: 'Limpieza de hogar' as const, icon: House, img: housePhoto, cls: ' photo-center' }, { value: 'Limpieza comercial y de negocios' as const, icon: Building2, img: commercialPhoto, cls: ' photo-low' }, { value: 'Varios servicios / paquete personalizado' as const, icon: Layers, img: snowPhoto, cls: ' snow-image' }];
+  return <div className="service-grid">{cards.map(({ value, icon: Icon, img, cls }, i) => { const title = t.serviceLabels[value]; const c = s.items[value]; return <article className={`service-card${i === cards.length - 1 ? ' service-card-wide' : ''}`} key={value}><img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`service-image${cls}`}/><div className="service-body"><div className="service-title"><Icon size={25} strokeWidth={1.5} aria-hidden="true"/><h3>{title}</h3></div><p>{c.text}</p><ul className="service-list">{c.features.map(f => <li key={f}><Check aria-hidden="true"/>{f}</li>)}</ul><QuoteButton service={value} label={`${s.consultLabel}${title}`}>{s.consult}</QuoteButton></div></article>; })}</div>;
 }
 export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2>{p.title}</h2></div><p>{p.l1}<br/>{p.l2}</p></div><ol className="process-grid">{p.steps.map(([title, text], i) => <li key={i}><span className="step-number" aria-hidden="true">0{i+1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>; }
 export function FinalCTA() { const { t } = useI18n(); return <section className="container-site final-band"><div><h2>{t.cta.title}</h2><p>{t.cta.text}</p></div><QuoteButton/></section>; }
