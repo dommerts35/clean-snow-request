@@ -131,4 +131,7 @@ main:focus { outline: none; }
 @keyframes typing-blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
 
 /* Five service cards: the last one closes the grid full width */
-.service-card-wide { grid-column: 1 / -1; } .service-card-wide .service-image { height: 200px; } .photo-center { object-position: center; } .photo-low { object-position: center 68%; }
+.service-card-wide { grid-column: 1 / -1; } .service-card-wide .service-image { height: 200px; object-position: center 85%; } .photo-action { object-position: center 62%; }
+.service-body { display: flex; flex-direction: column; } .service-body > button { margin-top: auto; }
+.service-card-wide .service-body { display: grid; grid-template-columns: 1.1fr .9fr; gap: 4px 44px; align-content: center; } .service-card-wide .service-title { grid-column: 1 / -1; } .service-card-wide .service-list { grid-column: 2; } .service-card-wide .service-body > button { grid-column: 2; justify-self: start; margin-top: 16px; }
+@media(max-width:640px) { .service-card-wide .service-body { grid-template-columns: 1fr; } .service-card-wide .service-list, .service-card-wide .service-body > button { grid-column: 1; } }
