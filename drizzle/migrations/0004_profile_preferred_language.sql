@@ -1,0 +1,2 @@
+ALTER TABLE public.profiles ADD COLUMN preferred_language text DEFAULT NULL CHECK (preferred_language IN ('en', 'es'));
+COMMENT ON COLUMN public.profiles.preferred_language IS 'Account UI language preference; null uses the browser or saved device choice.';
