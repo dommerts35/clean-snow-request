@@ -1,6 +1,7 @@
+import { useAccountI18n } from "@/lib/account-i18n";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+
 import { Send, Bot } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { requestAssistantReply } from "@/lib/assistant.functions";
@@ -11,6 +12,7 @@ import { useProfiles } from "./calendar-view";
 import type { Role } from "@/hooks/use-account";
 
 export function ChatView({ role, userId }: { role: Role; userId: string }) {
+  const { a, lang, date, time, duration, number, service, status, property, text } = useAccountI18n();
   const qc = useQueryClient();
   const staff = role !== "client";
   const { data: people = [] } = useProfiles();
@@ -34,7 +36,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
   const clients = useMemo(() => people.filter((p) => p.role === "client"), [people]);
   const thread = msgs.filter((m) => m.client_id === active);
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length, typing]);
-  const nameOf = (id: string | null) => !id ? "Equipo ClearView" : (id === userId ? "Tú" : people.find((p) => p.id === id)?.full_name || "Equipo ClearView");
+  const nameOf = (id: string | null) => !id ? a.chat.team : (id === userId ? a.chat.you : people.find((p) => p.id === id)?.full_name || a.chat.team);
 
   async function send(e: FormEvent) {
     e.preventDefault();
@@ -52,31 +54,31 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
     <div className={staff ? "chat-layout" : ""}>
       {staff && (
         <div className="panel-card chat-list">
-          <h3 className="panel-h">Clientes</h3>
-          {clients.length === 0 && <p className="muted">Sin clientes todavía.</p>}
+          <h3 className="panel-h">{a.chat.clients}</h3>
+          {clients.length === 0 && <p className="muted">{a.chat.noClients}</p>}
           {clients.map((c) => {
             const last = [...msgs].reverse().find((m) => m.client_id === c.id);
-            return <button key={c.id} className={`chat-item ${active === c.id ? "is-active" : ""}`} onClick={() => setActive(c.id)}><strong>{c.full_name || c.email}</strong><span>{last?.body ?? "Sin mensajes"}</span></button>;
+            return <button key={c.id} className={`chat-item ${active === c.id ? "is-active" : ""}`} onClick={() => setActive(c.id)}><strong>{c.full_name || c.email}</strong><span>{last?.body ?? a.chat.noMessages}</span></button>;
           })}
         </div>
       )}
       <div className="panel-card chat-box">
-        <h3 className="panel-h">{staff ? (active ? `Conversación con ${people.find((p) => p.id === active)?.full_name ?? ""}` : "Elige un cliente") : "Servicio al cliente"}</h3>
+        <h3 className="panel-h">{staff ? (active ? text(a.chat.conversation, { name: people.find((p) => p.id === active)?.full_name ?? "" }) : a.chat.choose) : a.nav.support}</h3>
         <div className="chat-messages">
-          {active && thread.length === 0 && <p className="muted">{staff ? "Aún no hay mensajes." : "Escríbenos y nuestro asistente te responderá enseguida; si hace falta, el equipo continúa la conversación."}</p>}
+          {active && thread.length === 0 && <p className="muted">{staff ? a.chat.empty : a.chat.intro}</p>}
           {thread.map((m) => (
             <div key={m.id} className={`bubble ${m.sender_id === userId ? "mine" : ""} ${m.is_ai ? "is-ai" : ""}`}>
-              <small>{m.is_ai ? <><span className="ai-badge"><Bot size={12} aria-hidden="true" />IA</span> Asistente IA</> : nameOf(m.sender_id)} · {format(new Date(m.created_at), "d/MM HH:mm")}</small>
+              <small>{m.is_ai ? <><span className="ai-badge"><Bot size={12} aria-hidden="true" />{a.chat.ai}</span> {a.chat.assistant}</> : nameOf(m.sender_id)} · {date(m.created_at, { month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit" })}</small>
               <p>{m.body}</p>
             </div>
           ))}
-          {typing && <div className="bubble is-ai typing" role="status"><small><span className="ai-badge"><Bot size={12} aria-hidden="true" />IA</span> Asistente IA</small><p className="typing-dots" aria-label="El asistente está escribiendo"><span /><span /><span /></p></div>}
+          {typing && <div className="bubble is-ai typing" role="status"><small><span className="ai-badge"><Bot size={12} aria-hidden="true" />{a.chat.ai}</span> {a.chat.assistant}</small><p className="typing-dots" aria-label={a.chat.typing}><span /><span /><span /></p></div>}
           <div ref={endRef} />
         </div>
         {active && (
           <form onSubmit={send} className="chat-form">
-            <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Escribe un mensaje…" maxLength={2000} />
-            <Button type="submit" size="icon" aria-label="Enviar"><Send size={16} /></Button>
+            <Input value={text} onChange={(e) => setText(e.target.value)} placeholder={a.chat.placeholder} aria-label={a.chat.placeholder} maxLength={2000} />
+            <Button type="submit" size="icon" aria-label={a.chat.send}><Send size={16} /></Button>
           </form>
         )}
       </div>
