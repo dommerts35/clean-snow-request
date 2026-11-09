@@ -116,12 +116,10 @@ main:focus { outline: none; }
 .lang-switch { display: inline-flex; align-items: center; gap: 2px; font-size: 13px; font-weight: 700; margin-left: auto; }
 .site-header .nav-links { margin-left: auto; } .site-header .lang-switch { margin-left: 0; }
 .lang-switch span { color: var(--muted-foreground); }
-.lang-switch button { min-width: 44px; min-height: 44px; padding: 0 6px; border-radius: 6px; color: var(--muted-foreground); }
+.lang-switch button { min-width: 32px; min-height: 32px; padding: 0 6px; border-radius: 6px; color: var(--muted-foreground); }
 .lang-switch button[aria-pressed=true] { color: var(--primary-text); text-decoration: underline; text-underline-offset: 4px; }
 .lang-switch button:hover { color: var(--foreground); }
 @media(max-width:640px) { .lang-switch button { min-width: 44px; min-height: 44px; } }
-.panel-user .lang-switch { flex-shrink: 0; }
-@media(max-width:640px) { .panel-page .site-header { height: auto; min-height: 80px; flex-wrap: wrap; padding-block: 12px; } .panel-user { flex-wrap: wrap; min-width: 0; } }
 
 /* AI assistant messages */
 .bubble.is-ai { background: var(--card); border: 1px dashed var(--border); }

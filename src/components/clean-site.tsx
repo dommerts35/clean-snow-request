@@ -23,9 +23,9 @@ export function Brand() { const { t } = useI18n(); return <Link to="/" className
 export function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang } = useI18n();
   return <div role="group" aria-label="Idioma / Language" className={`lang-switch ${className}`}>
-    <Button variant="ghost" type="button" lang="en" aria-label="English" aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</Button>
+    <button type="button" lang="en" aria-label="English" aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
     <span aria-hidden="true">|</span>
-    <Button variant="ghost" type="button" lang="es" aria-label="Español" aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</Button>
+    <button type="button" lang="es" aria-label="Español" aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
   </div>;
 }
 export function SiteShell({ children }: { children: ReactNode }) {
