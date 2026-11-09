@@ -133,5 +133,5 @@ main:focus { outline: none; }
 /* Five service cards: the last one is a horizontal card (photo left, text right) */
 .service-card { display: flex; flex-direction: column; } .service-body { display: flex; flex-direction: column; flex: 1; } .service-body > button { margin-top: auto; }
 .photo-action { object-position: center 62%; } .photo-house { object-position: center 45%; }
-.service-card-wide { grid-column: 1 / -1; flex-direction: row; align-items: stretch; } .service-card-wide .service-image { flex: 0 0 42%; width: 42%; height: auto; object-position: center 55%; }
+.service-card-wide { grid-column: 1 / -1; flex-direction: row; align-items: stretch; } .service-card-wide .service-image { flex: 0 0 42%; width: 42%; height: auto; object-position: center 55%; } .service-card-wide .service-body { justify-content: center; } .service-card-wide .service-body > button { margin-top: 20px; }
 @media(max-width:640px) { .service-card-wide { flex-direction: column; } .service-card-wide .service-image { flex: none; width: 100%; height: 225px; } }
