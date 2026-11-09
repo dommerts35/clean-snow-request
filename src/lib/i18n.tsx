@@ -1,6 +1,9 @@
 import { es } from './locales/es';
 import { en } from './locales/en';
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { isLocale, resolveLocale } from './locale-utils';
 
 export type Lang = 'es' | 'en';
 export const LANG_KEY = 'clara-lang';
@@ -47,9 +50,45 @@ const LangContext = createContext<Ctx>({ lang: 'es', t: es, setLang: () => {} })
 export function LangProvider({ children }: { children: ReactNode }) {
   // SSR and first client render use Spanish; the real choice is applied after hydration.
   const [lang, setLangState] = useState<Lang>('es');
+  const userId = useRef<string | null>(null);
+  const version = useRef(0);
+  const saves = useRef<Promise<unknown>>(Promise.resolve());
   useEffect(() => { setLangState(detectLang()); }, []);
+  useEffect(() => {
+    let alive = true;
+    async function loadPreference(id: string | null) {
+      userId.current = id;
+      const current = ++version.current;
+      if (!id) return;
+      const { data, error } = await supabase.from('profiles').select('preferred_language').eq('id', id).maybeSingle();
+      if (!alive || version.current !== current || error) return;
+      const selected = resolveLocale(detectLang(), '', data?.preferred_language);
+      setLangState(selected);
+      try { localStorage.setItem(LANG_KEY, selected); } catch { /* device storage unavailable */ }
+    }
+    void supabase.auth.getUser().then(({ data }) => { if (alive) void loadPreference(data.user?.id ?? null); });
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') { userId.current = null; version.current++; }
+      if (event === 'SIGNED_IN' && session?.user.id !== userId.current) {
+        const id = session?.user.id ?? null;
+        // Run queries outside the auth callback lock.
+        queueMicrotask(() => { if (alive) void loadPreference(id); });
+      }
+    });
+    return () => { alive = false; data.subscription.unsubscribe(); };
+  }, []);
   useEffect(() => { document.documentElement.lang = lang; }, [lang]);
-  const setLang = useCallback((l: Lang) => { setLangState(l); try { localStorage.setItem(LANG_KEY, l); } catch { /* ignore */ } }, []);
+  const setLang = useCallback((l: Lang) => {
+    if (!isLocale(l)) return;
+    version.current++;
+    setLangState(l);
+    try { localStorage.setItem(LANG_KEY, l); } catch { /* ignore */ }
+    const id = userId.current;
+    if (id) saves.current = saves.current.catch(() => {}).then(async () => {
+      const { data, error } = await supabase.from('profiles').update({ preferred_language: l }).eq('id', id).select('id');
+      if (error || !data?.length) toast.error(dictionaries[l].account.common.languageSaveFail);
+    });
+  }, []);
   return <LangContext.Provider value={{ lang, t: dictionaries[lang], setLang }}>{children}</LangContext.Provider>;
 }
 

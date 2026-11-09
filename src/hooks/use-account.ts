@@ -22,9 +22,10 @@ export function useAccount() {
     queryKey: ["account", user?.id],
     enabled: !!user,
     queryFn: async () => {
+      if (!user) return { profile: null, role: 'client' as Role };
       const [{ data: profile }, { data: roleRow }] = await Promise.all([
-        supabase.from("profiles").select("id, full_name, email").eq("id", user!.id).maybeSingle(),
-        supabase.from("user_roles").select("role").eq("user_id", user!.id).maybeSingle(),
+        supabase.from("profiles").select("id, full_name, email").eq("id", user.id).maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", user.id).maybeSingle(),
       ]);
       return { profile, role: (roleRow?.role ?? "client") as Role };
     },
@@ -32,4 +33,3 @@ export function useAccount() {
   return { user, ready, profile: query.data?.profile ?? null, role: query.data?.role, loading: !ready || (!!user && query.isLoading) };
 }
 
-export const ROLE_LABEL: Record<Role, string> = { admin: "Administrador", worker: "Trabajador", client: "Cliente" };
