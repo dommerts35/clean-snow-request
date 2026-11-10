@@ -23,7 +23,7 @@ export function useAccount() {
     enabled: !!user,
     queryFn: async () => {
       const [{ data: profile }, { data: roleRow }] = await Promise.all([
-        supabase.from("profiles").select("id, full_name, email").eq("id", user!.id).maybeSingle(),
+        supabase.from("profiles").select("id, full_name, email, preferred_language").eq("id", user!.id).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", user!.id).maybeSingle(),
       ]);
       return { profile, role: (roleRow?.role ?? "client") as Role };

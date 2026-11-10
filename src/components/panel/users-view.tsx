@@ -4,37 +4,39 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles } from "./calendar-view";
+import { usePanelI18n } from "@/lib/panel-i18n";
 import { ROLE_LABEL, type Role } from "@/hooks/use-account";
 
 export function UsersView({ userId }: { userId: string }) {
   const qc = useQueryClient();
+  const { p } = usePanelI18n();
   const { data: people = [] } = useProfiles();
   async function change(id: string, role: Role) {
     const { error } = await supabase.from("user_roles").update({ role }).eq("user_id", id);
-    if (error) { toast.error("No se pudo cambiar el rol."); return; }
-    toast.success("Rol actualizado");
+    if (error) { toast.error(p.users.roleFail); return; }
+    toast.success(p.users.roleOk);
     qc.invalidateQueries({ queryKey: ["profiles"] });
   }
   async function remove(id: string, name: string) {
-    if (!confirm(`¿Eliminar la cuenta de ${name || "este usuario"}? Se borrarán sus citas, mensajes y fichajes.`)) return;
+    if (!confirm(p.users.confirm(name))) return;
     const { error } = await supabase.rpc("admin_delete_account", { _user_id: id });
-    if (error) { toast.error("No se pudo eliminar la cuenta."); return; }
-    toast.success("Cuenta eliminada");
+    if (error) { toast.error(p.users.delFail); return; }
+    toast.success(p.users.delOk);
     qc.invalidateQueries({ queryKey: ["profiles"] });
     qc.invalidateQueries({ queryKey: ["appointments"] });
   }
   return (
     <div className="panel-card">
-      <h3 className="panel-h">Cuentas</h3>
-      <p className="muted mb-4">Los nuevos registros entran como clientes. Cambia aquí a trabajador o administrador.</p>
+      <h3 className="panel-h">{p.users.title}</h3>
+      <p className="muted mb-4">{p.users.intro}</p>
       <div className="table-wrap"><table className="data-table">
-        <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th></th></tr></thead>
+        <thead><tr><th>{p.users.name}</th><th>{p.users.email}</th><th>{p.users.role}</th><th></th></tr></thead>
         <tbody>{people.map((p) => (
           <tr key={p.id}><td>{p.full_name}</td><td>{p.email}</td><td>
             <select className="field" value={p.role} disabled={p.id === userId} onChange={(e) => change(p.id, e.target.value as Role)}>
-              {(Object.keys(ROLE_LABEL) as Role[]).map((r) => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
+              {(Object.keys(ROLE_LABEL) as Role[]).map((r) => <option key={r} value={r}>{p.roles[r]}</option>)}
             </select>
-          </td><td>{p.id !== userId && <Button variant="ghost" size="icon" aria-label="Eliminar cuenta" onClick={() => remove(p.id, p.full_name)}><Trash2 size={16} /></Button>}</td></tr>
+          </td><td>{p.id !== userId && <Button variant="ghost" size="icon" aria-label={p.users.delLabel} onClick={() => remove(p.id, p.full_name)}><Trash2 size={16} /></Button>}</td></tr>
         ))}</tbody>
       </table></div>
     </div>
