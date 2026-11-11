@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useChatData } from "@/hooks/use-unread";
+import { UnreadBadge } from "./unread-badge";
 import { format } from "date-fns";
 import { usePanelI18n } from "@/lib/panel-i18n";
 import { Send, Bot } from "lucide-react";
@@ -16,25 +18,18 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
   const staff = role !== "client";
   const { p, locale, timeFmt } = usePanelI18n();
   const { data: people = [] } = useProfiles();
-  const { data: msgs = [] } = useQuery({
-    queryKey: ["messages"],
-    queryFn: async () => (await supabase.from("messages").select("*").order("created_at")).data ?? [],
-  });
+  const { msgs, unread, markRead } = useChatData(userId);
   const [active, setActive] = useState<string | null>(staff ? null : userId);
   const [text, setText] = useState("");
   const [typing, setTyping] = useState(false);
   const askAssistant = useServerFn(requestAssistantReply);
   const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ch = supabase.channel("messages-live")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, () => qc.invalidateQueries({ queryKey: ["messages"] }))
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
-  }, [qc]);
 
   const clients = useMemo(() => people.filter((p) => p.role === "client"), [people]);
   const thread = msgs.filter((m) => m.client_id === active);
+  const lastAt = thread.length ? thread[thread.length - 1].created_at : null;
+  useEffect(() => { if (active && lastAt) void markRead(active, lastAt); }, [active, lastAt, markRead]);
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length, typing]);
   const nameOf = (id: string | null) => !id ? p.chat.team : (id === userId ? p.chat.you : people.find((x) => x.id === id)?.full_name || p.chat.team);
 
@@ -58,7 +53,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
           {clients.length === 0 && <p className="muted">{p.chat.noClients}</p>}
           {clients.map((c) => {
             const last = [...msgs].reverse().find((m) => m.client_id === c.id);
-            return <button key={c.id} className={`chat-item ${active === c.id ? "is-active" : ""}`} onClick={() => setActive(c.id)}><strong>{c.full_name || c.email}</strong><span>{last?.body ?? p.chat.noMessages}</span></button>;
+            return <button key={c.id} className={`chat-item ${active === c.id ? "is-active" : ""}`} onClick={() => setActive(c.id)}><strong className="chat-item-name">{c.full_name || c.email}<UnreadBadge count={unread[c.id] ?? 0} /></strong><span>{last?.body ?? p.chat.noMessages}</span></button>;
           })}
         </div>
       )}

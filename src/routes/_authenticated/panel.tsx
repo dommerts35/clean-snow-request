@@ -13,6 +13,8 @@ import { ChatView } from "@/components/panel/chat-view";
 import { ClockView } from "@/components/panel/clock-view";
 import { StatsView } from "@/components/panel/stats-view";
 import { UsersView } from "@/components/panel/users-view";
+import { useChatData } from "@/hooks/use-unread";
+import { UnreadBadge } from "@/components/panel/unread-badge";
 import { RequestsView } from "@/components/panel/requests-view";
 
 export const Route = createFileRoute("/_authenticated/panel")({
@@ -55,7 +57,7 @@ function Panel() {
         <Tabs defaultValue="calendar">
           <TabsList className="panel-tabs">
             <TabsTrigger value="calendar">{p.tabs.calendar}</TabsTrigger>
-            <TabsTrigger value="chat">{staff ? p.tabs.support : p.tabs.chat}</TabsTrigger>
+            <TabsTrigger value="chat">{staff ? p.tabs.support : p.tabs.chat}<ChatTabBadge userId={user.id} /></TabsTrigger>
             {staff && <TabsTrigger value="requests">{p.tabs.requests}</TabsTrigger>}
             <TabsTrigger value="stats">{p.tabs.stats}</TabsTrigger>
             {staff && <TabsTrigger value="clock">{p.tabs.clock}</TabsTrigger>}
@@ -71,4 +73,9 @@ function Panel() {
       </main>
     </div>
   );
+}
+
+function ChatTabBadge({ userId }: { userId: string }) {
+  const { total } = useChatData(userId);
+  return <UnreadBadge count={total} />;
 }

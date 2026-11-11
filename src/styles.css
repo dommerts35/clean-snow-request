@@ -135,3 +135,6 @@ main:focus { outline: none; }
 .photo-action { object-position: center 62%; } .photo-house { object-position: center 45%; }
 .service-card-wide { grid-column: 1 / -1; flex-direction: row; align-items: stretch; } .service-card-wide .service-image { flex: 0 0 42%; width: 42%; height: auto; object-position: center 55%; } .service-card-wide .service-body { justify-content: center; } .service-card-wide .service-body > button { margin-top: 20px; }
 @media(max-width:640px) { .service-card-wide { flex-direction: column; } .service-card-wide .service-image { flex: none; width: 100%; height: 225px; } }
+
+.unread-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 6px; border-radius: 999px; background: var(--destructive); color: var(--destructive-foreground, var(--primary-foreground)); font-size: 11px; font-weight: 700; line-height: 1; }
+.chat-item-name { display: flex; align-items: center; justify-content: space-between; gap: 6px; }

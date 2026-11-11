@@ -68,6 +68,24 @@ export type Database = {
           },
         ]
       }
+      chat_reads: {
+        Row: {
+          client_id: string
+          last_read_at: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          last_read_at?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          last_read_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           body: string

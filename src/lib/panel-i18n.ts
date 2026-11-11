@@ -16,7 +16,7 @@ const es = {
     services: { "Limpieza de ventanas": "Limpieza de ventanas", "Retiro de nieve": "Retiro de nieve", "Ambos servicios": "Ambos servicios" } as Record<string, string>,
   },
   chat: {
-    team: "Equipo ClearView", you: "Tú", clients: "Clientes", noClients: "Todavía no hay clientes.", noMessages: "Sin mensajes",
+    team: "Equipo ClearView", you: "Tú", clients: "Clientes", noClients: "Todavía no hay clientes.", noMessages: "Sin mensajes", unread: (n: string) => `${n} sin leer`,
     with: (n: string) => `Conversación con ${n}`, pickClient: "Elige un cliente", support: "Servicio al cliente", empty: "Todavía no hay mensajes.",
     clientIntro: "Escríbenos y nuestro asistente te responde al instante; si hace falta, alguien del equipo sigue la conversación.",
     ai: "Asistente IA", aiBadge: "IA", typing: "El asistente está escribiendo", placeholder: "Escribe un mensaje…", send: "Enviar",
@@ -54,7 +54,7 @@ const en: PanelDict = {
     services: { "Limpieza de ventanas": "Window cleaning", "Retiro de nieve": "Snow removal", "Ambos servicios": "Both services" },
   },
   chat: {
-    team: "ClearView Team", you: "You", clients: "Clients", noClients: "No clients yet.", noMessages: "No messages",
+    team: "ClearView Team", you: "You", clients: "Clients", noClients: "No clients yet.", noMessages: "No messages", unread: (n) => `${n} unread`,
     with: (n) => `Conversation with ${n}`, pickClient: "Choose a client", support: "Customer service", empty: "No messages yet.",
     clientIntro: "Send us a message and our assistant will reply right away; if needed, someone from our team will pick up the conversation.",
     ai: "AI Assistant", aiBadge: "AI", typing: "The assistant is typing", placeholder: "Type a message…", send: "Send",
