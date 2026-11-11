@@ -28,7 +28,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
 
   const clients = useMemo(() => people.filter((p) => p.role === "client"), [people]);
   const thread = msgs.filter((m) => m.client_id === active);
-  const lastAt = thread.length ? thread[thread.length - 1].created_at : null;
+  const lastAt = thread.length ? thread[thread.length - 1]?.created_at ?? null : null;
   useEffect(() => { if (active && lastAt) void markRead(active, lastAt); }, [active, lastAt, markRead]);
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [thread.length, typing]);
   const nameOf = (id: string | null) => !id ? p.chat.team : (id === userId ? p.chat.you : people.find((x) => x.id === id)?.full_name || p.chat.team);
