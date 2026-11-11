@@ -42,6 +42,7 @@ export function RequestsView({ role }: { role: Role }) {
             </select>
           </div>
           <div className="appt-meta">{format(new Date(r.created_at), p.req.dateFmt, { locale })} · <a href={`mailto:${r.email}`}>{r.email}</a> · {r.location}{r.property_type ? ` · ${prop[r.property_type] ?? r.property_type}` : ""}</div>
+          {r.address && <div className="appt-meta">{p.req.addressLabel}: {r.address}</div>}
           {r.details && <p className="appt-meta" style={{ whiteSpace: "pre-wrap" }}>{r.details}</p>}
           {role === "admin" && <Button variant="ghost" size="sm" onClick={() => remove(r.id)}><Trash2 size={14} />{p.req.del}</Button>}
         </div>

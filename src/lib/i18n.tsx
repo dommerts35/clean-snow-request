@@ -36,7 +36,7 @@ const es = {
   dialog: { title: 'Tu próximo espacio impecable', desc: 'Cuéntanos qué necesitas para preparar tu solicitud.' },
   form: {
     req: '(obligatorio)', opt: '(opcional)', name: 'Nombre', namePh: 'Tu nombre', email: 'Correo electrónico', emailPh: 'tu@correo.com',
-    service: 'Servicio', property: 'Tipo de propiedad o negocio', location: 'Ubicación', locationPh: 'Ciudad o zona', details: 'Detalles del proyecto',
+    service: 'Servicio', property: 'Tipo de propiedad o negocio', address: 'Dirección de la propiedad', addressPh: 'Calle y número, ciudad, estado y código postal (p. ej., Av. Principal 123, Guayaquil)', location: 'Ubicación', locationPh: 'Ciudad o zona', details: 'Detalles del proyecto',
     detailsPh: 'Cuéntanos brevemente sobre tu espacio o negocio (p. ej., número de pisos, tamaño aproximado o frecuencia de limpieza deseada)', send: 'Enviar solicitud', sending: 'Enviando…',
     ok: '¡Solicitud enviada! Nuestro equipo te contactará pronto.',
     fail: 'No pudimos enviar tu solicitud. Revisa tu conexión e inténtalo de nuevo.',
@@ -96,7 +96,7 @@ const en: Dict = {
   dialog: { title: 'Let’s get your property spotless', desc: 'Tell us what you need and we’ll put your quote together.' },
   form: {
     req: '(required)', opt: '(optional)', name: 'Name', namePh: 'Your name', email: 'Email', emailPh: 'you@example.com',
-    service: 'Service', property: 'Property / Business Type', location: 'Location', locationPh: 'Town or area (e.g. Montclair, NJ)', details: 'Project Details',
+    service: 'Service', property: 'Property / Business Type', address: 'Property Address', addressPh: 'Street address, city, state and ZIP (e.g. 123 Bloomfield Ave, Montclair, NJ 07042)', location: 'Location', locationPh: 'Town or area (e.g. Montclair, NJ)', details: 'Project Details',
     detailsPh: 'Tell us briefly about your space or business (e.g., number of stories, approximate size, or preferred cleaning frequency)', send: 'Send request', sending: 'Sending…',
     ok: 'Request sent! Our team will be in touch shortly.',
     fail: 'We couldn’t send your request. Please check your connection and try again.',

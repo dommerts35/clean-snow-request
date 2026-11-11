@@ -43,6 +43,13 @@
       "when": 1794416452921,
       "tag": "0005_chat_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794431906500,
+      "tag": "0006_quote_requests_address",
+      "breakpoints": true
     }
   ]
 }

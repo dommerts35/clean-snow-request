@@ -34,7 +34,7 @@ const es = {
     name: "Nombre", email: "Correo", role: "Rol", roleFail: "No pudimos cambiar el rol.", roleOk: "Rol actualizado",
     confirm: (n: string) => `¿Eliminar la cuenta de ${n || "este usuario"}? Se borrarán sus citas, mensajes y fichajes.`,
     delFail: "No pudimos eliminar la cuenta.", delOk: "Cuenta eliminada", delLabel: "Eliminar cuenta" },
-  req: { title: "Solicitudes de presupuesto", none: "Todavía no hay solicitudes.", updateFail: "No pudimos actualizar la solicitud.", confirm: "¿Quieres eliminar esta solicitud?",
+  req: { title: "Solicitudes de presupuesto", none: "Todavía no hay solicitudes.", updateFail: "No pudimos actualizar la solicitud.", confirm: "¿Quieres eliminar esta solicitud?", addressLabel: "Dirección de la propiedad",
     delFail: "No pudimos eliminar la solicitud.", delOk: "Solicitud eliminada", del: "Eliminar", dateFmt: "d MMM yyyy, HH:mm", statusLabel: "Estado",
     status: { nueva: "Nueva", contactada: "Contactada", cerrada: "Cerrada" } as Record<string, string> },
 };
@@ -72,7 +72,7 @@ const en: PanelDict = {
     name: "Name", email: "Email", role: "Role", roleFail: "We couldn’t change the role.", roleOk: "Role updated",
     confirm: (n) => `Delete ${n ? `${n}’s account` : "this account"}? Their appointments, messages and time entries will be removed.`,
     delFail: "We couldn’t delete the account.", delOk: "Account deleted", delLabel: "Delete account" },
-  req: { title: "Quote requests", none: "No requests yet.", updateFail: "We couldn’t update the request.", confirm: "Delete this request?",
+  req: { title: "Quote requests", none: "No requests yet.", updateFail: "We couldn’t update the request.", confirm: "Delete this request?", addressLabel: "Property address",
     delFail: "We couldn’t delete the request.", delOk: "Request deleted", del: "Delete", dateFmt: "MMM d, yyyy, h:mm a", statusLabel: "Status",
     status: { nueva: "New", contactada: "Contacted", cerrada: "Closed" } },
 };

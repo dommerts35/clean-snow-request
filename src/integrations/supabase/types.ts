@@ -154,6 +154,7 @@ export type Database = {
       }
       quote_requests: {
         Row: {
+          address: string
           created_at: string
           details: string
           email: string
@@ -165,6 +166,7 @@ export type Database = {
           status: string
         }
         Insert: {
+          address?: string
           created_at?: string
           details: string
           email: string
@@ -176,6 +178,7 @@ export type Database = {
           status?: string
         }
         Update: {
+          address?: string
           created_at?: string
           details?: string
           email?: string

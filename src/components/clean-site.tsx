@@ -56,13 +56,14 @@ export function QuoteForm({ initialService = SERVICE_VALUES[0] }: { initialServi
   const successRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => { if (ready) successRef.current?.focus(); }, [ready]);
   async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const form = event.currentTarget; const data = new FormData(form); setSending(true); setFailed(false); setReady(false);
-    const { error } = await supabase.from('quote_requests').insert({ name: String(data.get('name')), email: String(data.get('email')), service: toStoredService(String(data.get('service'))), property_type: toStoredProperty(String(data.get('property'))), location: String(data.get('location')), details: String(data.get('details') ?? '') });
+    const { error } = await supabase.from('quote_requests').insert({ name: String(data.get('name')), email: String(data.get('email')), service: toStoredService(String(data.get('service'))), property_type: toStoredProperty(String(data.get('property'))), address: String(data.get('address')), location: String(data.get('location')), details: String(data.get('details') ?? '') });
     setSending(false); if (error) { setFailed(true); return; } form.reset(); setReady(true); }
   return <form className="quote-form" onSubmit={submit} onInput={() => { setReady(false); setFailed(false); }}>
     <label>{f.name}<Req t={t}/><input name="name" autoComplete="name" placeholder={f.namePh} maxLength={200} required aria-required="true"/></label>
     <label>{f.email}<Req t={t}/><input name="email" type="email" inputMode="email" autoComplete="email" placeholder={f.emailPh} maxLength={255} required aria-required="true"/></label>
     <label>{f.service}<Req t={t}/><select name="service" defaultValue={initialService} required aria-required="true">{SERVICE_VALUES.map(v => <option key={v} value={v}>{t.serviceLabels[v]}</option>)}</select></label>
     <label>{f.property}<Req t={t}/><select name="property" defaultValue={PROPERTY_VALUES[0]} required aria-required="true">{PROPERTY_VALUES.map(v => <option key={v} value={v}>{t.propertyLabels[v]}</option>)}</select></label>
+    <label>{f.address}<Req t={t}/><input name="address" autoComplete="street-address" placeholder={f.addressPh} maxLength={300} required aria-required="true"/></label>
     <label>{f.location}<Req t={t}/><input name="location" autoComplete="address-level2" placeholder={f.locationPh} maxLength={300} required aria-required="true"/></label>
     <label>{f.details}<Opt t={t}/><textarea name="details" autoComplete="off" placeholder={f.detailsPh} maxLength={3000}/></label>
     <Button type="submit" disabled={sending}><Send aria-hidden="true"/>{sending ? f.sending : f.send}</Button>
