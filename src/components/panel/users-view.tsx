@@ -31,12 +31,12 @@ export function UsersView({ userId }: { userId: string }) {
       <p className="muted mb-4">{p.users.intro}</p>
       <div className="table-wrap"><table className="data-table">
         <thead><tr><th>{p.users.name}</th><th>{p.users.email}</th><th>{p.users.role}</th><th></th></tr></thead>
-        <tbody>{people.map((p) => (
-          <tr key={p.id}><td>{p.full_name}</td><td>{p.email}</td><td>
-            <select className="field" value={p.role} disabled={p.id === userId} onChange={(e) => change(p.id, e.target.value as Role)}>
+        <tbody>{people.map((u) => (
+          <tr key={u.id}><td>{u.full_name}</td><td>{u.email}</td><td>
+            <select className="field" value={u.role} disabled={u.id === userId} onChange={(e) => change(u.id, e.target.value as Role)}>
               {(Object.keys(ROLE_LABEL) as Role[]).map((r) => <option key={r} value={r}>{p.roles[r]}</option>)}
             </select>
-          </td><td>{p.id !== userId && <Button variant="ghost" size="icon" aria-label={p.users.delLabel} onClick={() => remove(p.id, p.full_name)}><Trash2 size={16} /></Button>}</td></tr>
+          </td><td>{u.id !== userId && <Button variant="ghost" size="icon" aria-label={p.users.delLabel} onClick={() => remove(u.id, u.full_name)}><Trash2 size={16} /></Button>}</td></tr>
         ))}</tbody>
       </table></div>
     </div>

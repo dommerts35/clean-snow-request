@@ -55,7 +55,7 @@ export function ClockView({ role, userId }: { role: Role; userId: string }) {
         <div>
           <div className="eyebrow">{openEntry ? p.clock.working : p.clock.off}</div>
           <h3 className="clock-time">{openEntry ? formatDuration(workedMinutes(openEntry.clock_in, null, now)) : format(now, timeFmt, { locale })}</h3>
-          <p className="muted">{openEntry ? p.clock.inAt(format(new Date(openEntry.clock_in), timeFmt, { locale }), openEntry.in_label) : p.clock.hint}</p>
+          <p className="muted">{openEntry ? p.clock.inAt(format(new Date(openEntry.clock_in), timeFmt, { locale }), openEntry.in_label ?? "") : p.clock.hint}</p>
           <p className="form-notice">{p.clock.demo}</p>
         </div>
         <Button size="lg" onClick={() => toggle.mutate()} disabled={toggle.isPending} variant={openEntry ? "outline" : "default"}>

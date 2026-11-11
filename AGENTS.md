@@ -18,3 +18,4 @@
 - The AI chat assistant runs in a protected server function that inserts replies with the admin client (is_ai=true, sender_id null); its knowledge lives in one editable prompt constant, and handoff rules are a pure tested module — keeps behaviour editable and auditable.
 - The brand mark is `src/assets/logo.svg`; `public/favicon.svg` is a square, padded derivative of it (not a copy), so regenerate the favicon whenever the mark changes.
 - The service list has one source of truth in `src/lib/i18n.tsx` (`SERVICE_VALUES` plus the per-service copy and photos); the services grid, the quote-form dropdown and the staff panel all read from it, so a new service is added there rather than in page markup.
+- Account-area UI copy lives in `src/lib/panel-i18n.ts` (keyed by the shared language from `src/lib/i18n.tsx`); stored DB values (statuses, services) stay Spanish and are mapped to labels at render, and a signed-in user's choice syncs to `profiles.preferred_language`.
