@@ -205,7 +205,6 @@ main:focus { outline: none; }
   .infinite-slider-track { animation: slider-x var(--slider-duration) linear infinite; }
   .infinite-slider.is-vertical .infinite-slider-track { animation-name: slider-y; }
   .infinite-slider.is-reverse .infinite-slider-track { animation-direction: reverse; }
-  .infinite-slider:hover .infinite-slider-track { animation-duration: var(--slider-duration-hover); }
 }
 @media(prefers-reduced-motion:reduce) { .infinite-slider { mask-image: none; -webkit-mask-image: none; } .infinite-slider-track { flex-wrap: wrap; width: auto; justify-content: center; } .infinite-slider-group.is-copy { display: none; } .infinite-slider-group { flex-wrap: wrap; justify-content: center; } }
 @keyframes slider-x { to { transform: translateX(calc(-50% - var(--slider-gap) / 2)); } }

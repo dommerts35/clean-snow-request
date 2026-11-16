@@ -1,4 +1,4 @@
-import { Children, type CSSProperties, type ReactNode } from "react";
+import { Children, useRef, type CSSProperties, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface InfiniteSliderProps {
@@ -30,11 +30,14 @@ export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHo
   const style = {
     "--slider-gap": `${gap}px`,
     "--slider-duration": `${duration}s`,
-    "--slider-duration-hover": durationOnHover === undefined ? `${duration}s` : `${durationOnHover || 1e9}s`,
   } as CSSProperties;
+  const track = useRef<HTMLDivElement>(null);
+  // Change speed in place (no jump): adjust the running animation's playback rate instead of its duration.
+  const setRate = (rate: number) => track.current?.getAnimations().forEach((a) => (a.updatePlaybackRate ? a.updatePlaybackRate(rate) : (a.playbackRate = rate)));
+  const hoverRate = durationOnHover === undefined ? 1 : durationOnHover === 0 ? 0 : duration / durationOnHover;
   return (
-    <div className={cn("infinite-slider overflow-hidden", vertical && "is-vertical", reverse && "is-reverse", className)} style={style}>
-      <div className="infinite-slider-track">
+    <div onPointerEnter={() => setRate(hoverRate)} onPointerLeave={() => setRate(1)} className={cn("infinite-slider overflow-hidden", vertical && "is-vertical", reverse && "is-reverse", className)} style={style}>
+      <div ref={track} className="infinite-slider-track">
         <ul className="infinite-slider-group" aria-label={aria["aria-label"]}>
           {items.map((c, i) => <li key={i}>{c}</li>)}
           {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) => items.map((c, i) => <li key={`r${r}-${i}`} aria-hidden="true">{c}</li>))}
