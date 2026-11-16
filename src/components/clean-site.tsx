@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Building2, Home, Mail, Users, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
+import { Building2, CalendarCheck, MessageSquare, Home, Mail, Users, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
 import { useSessionUser } from '@/hooks/use-account';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { BorderBeam } from '@/components/ui/border-beam';
 import { DitherField } from '@/components/ui/dither-field';
 import { Dock, DockIcon } from '@/components/ui/dock';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { FeaturesSectionWithHoverEffects } from '@/components/blocks/feature-section-with-hover-effects';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -105,7 +106,7 @@ export function Services() {
       background={<img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`h-full w-full object-cover ${pos} transition-transform duration-500 group-hover:scale-105`}/>}
       extra={<ul className="mt-2 flex flex-wrap gap-2">{c.features.map(f => <li key={f} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[13px] font-medium text-white backdrop-blur-sm"><Check size={14} aria-hidden="true"/>{f}</li>)}</ul>}/>; })}</BentoGrid>;
 }
-export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2><AnimatedGradientText>{p.title}</AnimatedGradientText></h2></div><p>{p.l1}<br/>{p.l2}</p></div><ol className="process-grid">{p.steps.map(([title, text], i) => <li key={i}><span className="step-number" aria-hidden="true">0{i+1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>; }
+export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2><AnimatedGradientText>{p.title}</AnimatedGradientText></h2></div><p>{p.l1}<br/>{p.l2}</p></div><FeaturesSectionWithHoverEffects columns={3} features={p.steps.map(([title, text], i) => { const Icon = [MessageSquare, CalendarCheck, Sparkles][i] ?? Sparkles; return { title, description: text, icon: <Icon size={28} strokeWidth={1.6}/> }; })}/></div></section>; }
 export function FinalCTA() { const { t } = useI18n(); return <DitherField pattern="waves" color={["var(--dither-low)", "var(--dither-mid)", "var(--dither-high)"]} className="final-dither bg-overlay [--dither-low:oklch(0.32_0.06_170)] [--dither-mid:oklch(0.55_0.13_150)] [--dither-high:oklch(0.8_0.16_145)]"><section className="container-site final-band"><div><h2><AnimatedGradientText tone="dark">{t.cta.title}</AnimatedGradientText></h2><p>{t.cta.text}</p></div><QuoteButton/></section></DitherField>; }
 export function TrustStrip() { const { t } = useI18n(); const icons = [ShieldCheck, Sparkles, Leaf, Snowflake]; return <section className="trust-strip" aria-label={t.trust.label}><ul className="container-site trust-inner">{t.trust.items.map((text, i) => { const I = icons[i] ?? icons[0]!; return <li className="trust-item" key={i}><I strokeWidth={1.6} aria-hidden="true"/><span>{text}</span></li>; })}</ul></section>; }
 export const sitePhoto = heroPhoto;
