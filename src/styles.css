@@ -155,3 +155,6 @@ main:focus { outline: none; }
 /* Final call-to-action on the dither background */
 .final-dither { color: var(--hero-foreground); } .final-dither .final-band { padding-block: 80px; } .final-dither .final-band p { color: oklch(0.99 0 0 / 80%); }
 @media(max-width:640px) { .final-dither .final-band { flex-direction: column; align-items: flex-start; padding-block: 56px; } }
+/* Contact page: centered heading and form */
+.contact-page .page-heading { text-align: center; margin-inline: auto; } .contact-page .page-heading p { margin-inline: auto; } .contact-page .page-heading .eyebrow { justify-content: center; }
+.contact-page .contact-form { margin-inline: auto; }
