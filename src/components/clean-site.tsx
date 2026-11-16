@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, Building2, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
+import { ArrowRight, Building2, Home, Mail, Users, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
 import { useSessionUser } from '@/hooks/use-account';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { AnimatedGradientText } from '@/components/ui/animated-gradient-text';
 import { BentoCard, BentoGrid } from '@/components/ui/bento-grid';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { DitherField } from '@/components/ui/dither-field';
+import { Dock, DockIcon } from '@/components/ui/dock';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -23,6 +24,19 @@ export function QuoteButton({ children, service, className, label }: { children?
   return <Button className={className} aria-label={label} onClick={() => open(service)}><AnimatedGradientText tone="onPrimary">{children ?? t.quote}</AnimatedGradientText><ArrowRight size={16} aria-hidden="true"/></Button>;
 }
 function AccountLink({ onClick }: { onClick: () => void }) { const { user } = useSessionUser(); const { t } = useI18n(); return user ? <Link to="/panel" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.panel}</Link> : <Link to="/auth" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.login}</Link>; }
+/** Desktop navigation as a magnifying dock; the text menu below stays for phones. */
+function SiteDock() {
+  const { t } = useI18n(); const { user } = useSessionUser();
+  const items = [
+    { to: '/' as const, label: t.nav.home, Icon: Home, exact: true },
+    { to: '/servicios' as const, label: t.nav.services, Icon: Sparkles },
+    { to: '/nosotros' as const, label: t.nav.about, Icon: Users },
+    { to: '/contacto' as const, label: t.nav.contact, Icon: Mail },
+    { to: (user ? '/panel' : '/auth') as '/panel' | '/auth', label: user ? t.nav.panel : t.nav.login, Icon: UserRound },
+  ];
+  return <nav aria-label={t.nav.main} className="site-dock"><Dock iconSize={42} iconMagnification={62} iconDistance={130}>{items.map(({ to, label, Icon, exact }) =>
+    <DockIcon key={to}><Link to={to} activeOptions={{ exact: !!exact }} aria-label={label} className="dock-link group"><Icon className="size-[45%]" strokeWidth={1.8} aria-hidden="true"/><span className="dock-tip" aria-hidden="true">{label}</span></Link></DockIcon>)}</Dock></nav>;
+}
 export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><img src={logoUrl} className="brand-icon" width={415} height={326} alt="" aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span><span style={{ marginLeft: 8, padding: "2px 8px", borderRadius: 999, background: "#f59e0b", color: "#111", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>(rama de prueba)</span></Link>; }
 export function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang } = useI18n();
@@ -44,7 +58,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   const close = () => setMenu(false);
   return <QuoteContext.Provider value={(value) => { setService(value || SERVICE_VALUES[0]); setOpen(true); }}>
   <a href="#contenido" className="skip-link">{t.skip}</a>
-  <header className="container-site site-header"><Brand/><nav id="menu-principal" aria-label={t.nav.main} className={`nav-links ${menu ? 'is-open' : ''}`}><Link to="/" activeOptions={{ exact: true }} onClick={close}>{t.nav.home}</Link><Link to="/servicios" onClick={close}>{t.nav.services}</Link><Link to="/nosotros" onClick={close}>{t.nav.about}</Link><Link to="/contacto" onClick={close}>{t.nav.contact}</Link><AccountLink onClick={close}/></nav><LangSwitch/><QuoteButton className="header-cta"/><Button ref={toggleRef} variant="ghost" size="icon" className="mobile-menu min-h-11 min-w-11" aria-label={menu ? t.nav.close : t.nav.open} aria-expanded={menu} aria-controls="menu-principal" onClick={() => setMenu(!menu)}>{menu ? <X aria-hidden="true"/> : <Menu aria-hidden="true"/>}</Button></header>
+  <header className="container-site site-header"><Brand/><SiteDock/><nav id="menu-principal" aria-label={t.nav.main} className={`nav-links ${menu ? 'is-open' : ''}`}><Link to="/" activeOptions={{ exact: true }} onClick={close}>{t.nav.home}</Link><Link to="/servicios" onClick={close}>{t.nav.services}</Link><Link to="/nosotros" onClick={close}>{t.nav.about}</Link><Link to="/contacto" onClick={close}>{t.nav.contact}</Link><AccountLink onClick={close}/></nav><LangSwitch/><QuoteButton className="header-cta"/><Button ref={toggleRef} variant="ghost" size="icon" className="mobile-menu min-h-11 min-w-11" aria-label={menu ? t.nav.close : t.nav.open} aria-expanded={menu} aria-controls="menu-principal" onClick={() => setMenu(!menu)}>{menu ? <X aria-hidden="true"/> : <Menu aria-hidden="true"/>}</Button></header>
   <main id="contenido" tabIndex={-1}>{children}</main><footer className="footer"><div className="container-site footer-inner"><Brand/><p>{t.footer}</p><p>© {new Date().getFullYear()} ClearView Solutions.</p></div></footer>
   <Dialog open={open} onOpenChange={setOpen}><DialogContent className="quote-dialog"><DialogHeader><DialogTitle>{t.dialog.title}</DialogTitle><DialogDescription>{t.dialog.desc}</DialogDescription></DialogHeader><QuoteForm initialService={service}/></DialogContent></Dialog>
   </QuoteContext.Provider>;
