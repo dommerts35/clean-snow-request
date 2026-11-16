@@ -59,7 +59,7 @@ export function DockIcon({ children, className, style, ...props }: DockIconProps
     <div
       ref={ref}
       style={{ width: current, height: current, ...style }}
-      className={cn("relative flex shrink-0 items-center justify-center rounded-full transition-[width,height] duration-150 ease-out", className)}
+      className={cn("relative flex shrink-0 items-center justify-center rounded-[10px] transition-[width,height] duration-150 ease-out", className)}
       {...props}
     >
       {children}
