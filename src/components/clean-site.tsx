@@ -19,7 +19,7 @@ export function QuoteButton({ children, service, className, label }: { children?
   return <Button className={className} aria-label={label} onClick={() => open(service)}>{children ?? t.quote}<ArrowRight size={16} aria-hidden="true"/></Button>;
 }
 function AccountLink({ onClick }: { onClick: () => void }) { const { user } = useSessionUser(); const { t } = useI18n(); return user ? <Link to="/panel" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.panel}</Link> : <Link to="/auth" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.login}</Link>; }
-export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><img src={logoUrl} className="brand-icon" width={415} height={326} alt="" aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span></Link>; }
+export function Brand() { const { t } = useI18n(); return <Link to="/" className="brand" aria-label={t.brandLabel}><img src={logoUrl} className="brand-icon" width={415} height={326} alt="" aria-hidden="true"/><span aria-hidden="true">clearview<span>.</span><small>{t.brandTag}</small></span><span style={{ marginLeft: 8, padding: "2px 8px", borderRadius: 999, background: "#f59e0b", color: "#111", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>(rama de prueba)</span></Link>; }
 export function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang } = useI18n();
   return <div role="group" aria-label="Idioma / Language" className={`lang-switch ${className}`}>
