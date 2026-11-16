@@ -10,6 +10,7 @@ import logoUrl from '@/assets/logo.svg';
 import { AnimatedGradientText } from '@/components/ui/animated-gradient-text';
 import { BentoCard, BentoGrid } from '@/components/ui/bento-grid';
 import { BorderBeam } from '@/components/ui/border-beam';
+import { DitherField } from '@/components/ui/dither-field';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -90,7 +91,7 @@ export function Services() {
       extra={<ul className="mt-2 flex flex-wrap gap-2">{c.features.map(f => <li key={f} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[13px] font-medium text-white backdrop-blur-sm"><Check size={14} aria-hidden="true"/>{f}</li>)}</ul>}/>; })}</BentoGrid>;
 }
 export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2><AnimatedGradientText>{p.title}</AnimatedGradientText></h2></div><p>{p.l1}<br/>{p.l2}</p></div><ol className="process-grid">{p.steps.map(([title, text], i) => <li key={i}><span className="step-number" aria-hidden="true">0{i+1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>; }
-export function FinalCTA() { const { t } = useI18n(); return <section className="container-site final-band"><div><h2><AnimatedGradientText>{t.cta.title}</AnimatedGradientText></h2><p>{t.cta.text}</p></div><QuoteButton/></section>; }
+export function FinalCTA() { const { t } = useI18n(); return <DitherField className="final-dither"><section className="container-site final-band"><div><h2><AnimatedGradientText tone="dark">{t.cta.title}</AnimatedGradientText></h2><p>{t.cta.text}</p></div><QuoteButton/></section></DitherField>; }
 export function TrustStrip() { const { t } = useI18n(); const icons = [ShieldCheck, Sparkles, Leaf, Snowflake]; return <section className="trust-strip" aria-label={t.trust.label}><ul className="container-site trust-inner">{t.trust.items.map((text, i) => { const I = icons[i] ?? icons[0]!; return <li className="trust-item" key={i}><I strokeWidth={1.6} aria-hidden="true"/><span>{text}</span></li>; })}</ul></section>; }
 export const sitePhoto = heroPhoto;
 /** SSR head uses Spanish (default); usePageMeta swaps title/description on the client. */
