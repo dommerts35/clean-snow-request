@@ -24,7 +24,11 @@ function resolveColors(el: HTMLElement, colors: string[]) {
   const probe = document.createElement("span");
   probe.style.display = "none";
   el.appendChild(probe);
-  const out = colors.map((c) => { probe.style.color = ""; probe.style.color = c; return getComputedStyle(probe).color || c; });
+  const out = colors.map((c) => {
+    probe.style.color = "";
+    probe.style.color = c;
+    return getComputedStyle(probe).color || c;
+  });
   probe.remove();
   return out;
 }
@@ -34,25 +38,40 @@ function resolveColors(el: HTMLElement, colors: string[]) {
  * Follows the pointer, pauses off-screen, and renders a still frame when reduced motion is preferred.
  * The element's own background shows between the dots.
  */
-export function DitherField({ children, className, pattern = "horizon", color = ["var(--primary)"], pixelSize = 4, speed = 1, interactive = true, ...props }: DitherFieldProps) {
+export function DitherField({
+  children,
+  className,
+  pattern = "horizon",
+  color = ["var(--primary)"],
+  pixelSize = 4,
+  speed = 1,
+  interactive = true,
+  ...props
+}: DitherFieldProps) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const colorKey = Array.isArray(color) ? color.join("|") : color;
 
   useEffect(() => {
-    const el = wrap.current, cv = canvas.current;
+    const el = wrap.current,
+      cv = canvas.current;
     if (!el || !cv) return;
     const ctx = cv.getContext("2d");
     if (!ctx) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches || speed === 0;
     let palette = resolveColors(el, colorKey.split("|"));
-    let w = 0, h = 0, raf = 0, visible = true, t = 0;
+    let w = 0,
+      h = 0,
+      raf = 0,
+      visible = true,
+      t = 0;
     const pointer = { x: -1, y: -1, s: 0 }; // s eases the glow in and out
 
     const resize = () => {
       w = Math.max(1, Math.ceil(el.clientWidth / pixelSize));
       h = Math.max(1, Math.ceil(el.clientHeight / pixelSize));
-      cv.width = w; cv.height = h;
+      cv.width = w;
+      cv.height = h;
     };
     const field = (u: number, v: number) => {
       let f: number;
@@ -61,19 +80,29 @@ export function DitherField({ children, className, pattern = "horizon", color = 
         f = Math.pow(Math.max(0, v - 0.25 + ridge), 1.35) * 1.55;
         f += 0.06 * Math.sin(u * 22 + v * 9 - t * 1.6);
       } else if (pattern === "glow") {
-        const dx = (u - 0.5) * (w / h), dy = v - 0.55;
+        const dx = (u - 0.5) * (w / h),
+          dy = v - 0.55;
         f = (0.85 + 0.12 * Math.sin(t * 1.2)) * Math.exp(-(dx * dx + dy * dy) / 0.22);
       } else if (pattern === "aurora") {
         const band = Math.sin(u * 5 + Math.sin(v * 3 + t * 0.5) * 1.4 + t * 0.35);
         f = (0.5 + 0.5 * band) * (1 - v) * 1.15 * (0.75 + 0.25 * Math.sin(u * 13 - t));
       } else if (pattern === "clouds") {
-        f = 0.42 + 0.22 * Math.sin(u * 3.1 + t * 0.25) * Math.sin(v * 2.7 - t * 0.2) + 0.18 * Math.sin(u * 7.3 - v * 4.1 + t * 0.4) + 0.12 * Math.sin(u * 13 + v * 11 - t * 0.3);
+        f =
+          0.42 +
+          0.22 * Math.sin(u * 3.1 + t * 0.25) * Math.sin(v * 2.7 - t * 0.2) +
+          0.18 * Math.sin(u * 7.3 - v * 4.1 + t * 0.4) +
+          0.12 * Math.sin(u * 13 + v * 11 - t * 0.3);
       } else {
-        f = 0.45 + 0.25 * Math.sin(u * 6 + t * 0.6) + 0.18 * Math.sin(v * 5 - t * 0.45 + u * 3) + 0.12 * Math.sin((u + v) * 9 + t * 0.9);
+        f =
+          0.45 +
+          0.25 * Math.sin(u * 6 + t * 0.6) +
+          0.18 * Math.sin(v * 5 - t * 0.45 + u * 3) +
+          0.12 * Math.sin((u + v) * 9 + t * 0.9);
         f *= 0.2 + 0.8 * u;
       }
       if (pointer.s > 0.01) {
-        const dx = (u - pointer.x) * (w / h), dy = v - pointer.y;
+        const dx = (u - pointer.x) * (w / h),
+          dy = v - pointer.y;
         f += pointer.s * 0.55 * Math.exp(-(dx * dx + dy * dy) / 0.035);
       }
       return Math.min(1, Math.max(0, f));
@@ -101,30 +130,59 @@ export function DitherField({ children, className, pattern = "horizon", color = 
       raf = requestAnimationFrame(loop);
     };
 
-    const onMove = (e: PointerEvent) => { const r = el.getBoundingClientRect(); pointer.x = (e.clientX - r.left) / r.width; pointer.y = (e.clientY - r.top) / r.height; };
-    const onLeave = () => { pointer.x = -1; };
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      pointer.x = (e.clientX - r.left) / r.width;
+      pointer.y = (e.clientY - r.top) / r.height;
+    };
+    const onLeave = () => {
+      pointer.x = -1;
+    };
     // Re-read colors when the theme (class / data-theme on <html>) changes.
-    const mo = new MutationObserver(() => { palette = resolveColors(el, colorKey.split("|")); if (still) draw(); });
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme", "style"] });
+    const mo = new MutationObserver(() => {
+      palette = resolveColors(el, colorKey.split("|"));
+      if (still) draw();
+    });
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "data-theme", "style"],
+    });
 
-    resize(); draw();
-    const ro = new ResizeObserver(() => { resize(); draw(); });
+    resize();
+    draw();
+    const ro = new ResizeObserver(() => {
+      resize();
+      draw();
+    });
     ro.observe(el);
-    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+    });
     io.observe(el);
     if (!still) {
-      if (interactive) { el.addEventListener("pointermove", onMove); el.addEventListener("pointerleave", onLeave); }
+      if (interactive) {
+        el.addEventListener("pointermove", onMove);
+        el.addEventListener("pointerleave", onLeave);
+      }
       raf = requestAnimationFrame(loop);
     }
     return () => {
-      cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); mo.disconnect();
-      el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave);
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      mo.disconnect();
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
     };
   }, [pattern, colorKey, pixelSize, speed, interactive]);
 
   return (
     <div ref={wrap} className={cn("relative isolate overflow-hidden", className)} {...props}>
-      <canvas ref={canvas} aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 h-full w-full [image-rendering:pixelated]" />
+      <canvas
+        ref={canvas}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 h-full w-full [image-rendering:pixelated]"
+      />
       {children}
     </div>
   );

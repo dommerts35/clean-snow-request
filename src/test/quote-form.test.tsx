@@ -4,7 +4,11 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { LANG_KEY, LangProvider } from "@/lib/i18n";
 import { QuoteForm } from "@/components/clean-site";
 
-const withLang = () => <LangProvider><QuoteForm /></LangProvider>;
+const withLang = () => (
+  <LangProvider>
+    <QuoteForm />
+  </LangProvider>
+);
 
 /** The quote form must always ask for the property's full address, in both languages. */
 describe("quote form property address", () => {

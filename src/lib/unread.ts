@@ -2,7 +2,11 @@
 export type UnreadMsg = { client_id: string; sender_id: string | null; created_at: string };
 export type ReadRow = { client_id: string; last_read_at: string };
 
-export function unreadByConversation(msgs: UnreadMsg[], reads: ReadRow[], userId: string): Record<string, number> {
+export function unreadByConversation(
+  msgs: UnreadMsg[],
+  reads: ReadRow[],
+  userId: string,
+): Record<string, number> {
   const last = new Map(reads.map((r) => [r.client_id, new Date(r.last_read_at).getTime()]));
   const out: Record<string, number> = {};
   for (const m of msgs) {

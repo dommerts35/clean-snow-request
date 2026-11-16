@@ -11,7 +11,12 @@ export interface AuroraTextProps {
 }
 
 /** Magic UI aurora text: shifting multi-color fill (no movement of the letters). Still when reduced motion is preferred. */
-export const AuroraText = memo(function AuroraText({ children, className, colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"], speed = 1 }: AuroraTextProps) {
+export const AuroraText = memo(function AuroraText({
+  children,
+  className,
+  colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"],
+  speed = 1,
+}: AuroraTextProps) {
   const style = {
     backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
     animationDuration: `${10 / speed}s`,
@@ -19,7 +24,9 @@ export const AuroraText = memo(function AuroraText({ children, className, colors
   return (
     <span className={cn("relative inline-block", className)}>
       <span className="sr-only">{children}</span>
-      <span className="aurora-text" style={style} aria-hidden="true">{children}</span>
+      <span className="aurora-text" style={style} aria-hidden="true">
+        {children}
+      </span>
     </span>
   );
 });

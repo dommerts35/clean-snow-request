@@ -15,7 +15,11 @@ export function pickDemoLocation(index: number): DemoLocation {
 }
 
 /** Minutos trabajados en un fichaje; si sigue abierto, cuenta hasta `now`. */
-export function workedMinutes(clockIn: string | Date, clockOut: string | Date | null, now: Date = new Date()): number {
+export function workedMinutes(
+  clockIn: string | Date,
+  clockOut: string | Date | null,
+  now: Date = new Date(),
+): number {
   const start = new Date(clockIn).getTime();
   const end = clockOut ? new Date(clockOut).getTime() : now.getTime();
   return Math.max(0, Math.floor((end - start) / 60000));
@@ -27,6 +31,9 @@ export function formatDuration(minutes: number): string {
   return `${h} h ${String(m).padStart(2, "0")} min`;
 }
 
-export function totalMinutes(entries: { clock_in: string; clock_out: string | null }[], now: Date = new Date()): number {
+export function totalMinutes(
+  entries: { clock_in: string; clock_out: string | null }[],
+  now: Date = new Date(),
+): number {
   return entries.reduce((sum, e) => sum + workedMinutes(e.clock_in, e.clock_out, now), 0);
 }

@@ -24,7 +24,17 @@ export interface InfiniteSliderProps {
  * slides by exactly one copy. The second copy is hidden from screen readers.
  * With reduced motion the items simply wrap and stay still.
  */
-export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHover, direction = "horizontal", reverse = false, repeat = 1, className, ...aria }: InfiniteSliderProps) {
+export function InfiniteSlider({
+  children,
+  gap = 16,
+  duration = 25,
+  durationOnHover,
+  direction = "horizontal",
+  reverse = false,
+  repeat = 1,
+  className,
+  ...aria
+}: InfiniteSliderProps) {
   const items = Children.toArray(children);
   const vertical = direction === "vertical";
   const style = {
@@ -33,17 +43,43 @@ export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHo
   } as CSSProperties;
   const track = useRef<HTMLDivElement>(null);
   // Change speed in place (no jump): adjust the running animation's playback rate instead of its duration.
-  const setRate = (rate: number) => track.current?.getAnimations().forEach((a) => (a.updatePlaybackRate ? a.updatePlaybackRate(rate) : (a.playbackRate = rate)));
-  const hoverRate = durationOnHover === undefined ? 1 : durationOnHover === 0 ? 0 : duration / durationOnHover;
+  const setRate = (rate: number) =>
+    track.current
+      ?.getAnimations()
+      .forEach((a) =>
+        a.updatePlaybackRate ? a.updatePlaybackRate(rate) : (a.playbackRate = rate),
+      );
+  const hoverRate =
+    durationOnHover === undefined ? 1 : durationOnHover === 0 ? 0 : duration / durationOnHover;
   return (
-    <div onPointerEnter={() => setRate(hoverRate)} onPointerLeave={() => setRate(1)} className={cn("infinite-slider overflow-hidden", vertical && "is-vertical", reverse && "is-reverse", className)} style={style}>
+    <div
+      onPointerEnter={() => setRate(hoverRate)}
+      onPointerLeave={() => setRate(1)}
+      className={cn(
+        "infinite-slider overflow-hidden",
+        vertical && "is-vertical",
+        reverse && "is-reverse",
+        className,
+      )}
+      style={style}
+    >
       <div ref={track} className="infinite-slider-track">
         <ul className="infinite-slider-group" aria-label={aria["aria-label"]}>
-          {items.map((c, i) => <li key={i}>{c}</li>)}
-          {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) => items.map((c, i) => <li key={`r${r}-${i}`} aria-hidden="true">{c}</li>))}
+          {items.map((c, i) => (
+            <li key={i}>{c}</li>
+          ))}
+          {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) =>
+            items.map((c, i) => (
+              <li key={`r${r}-${i}`} aria-hidden="true">
+                {c}
+              </li>
+            )),
+          )}
         </ul>
         <ul className="infinite-slider-group is-copy" aria-hidden="true">
-          {Array.from({ length: Math.max(1, repeat) }, (_, r) => items.map((c, i) => <li key={`c${r}-${i}`}>{c}</li>))}
+          {Array.from({ length: Math.max(1, repeat) }, (_, r) =>
+            items.map((c, i) => <li key={`c${r}-${i}`}>{c}</li>),
+          )}
         </ul>
       </div>
     </div>

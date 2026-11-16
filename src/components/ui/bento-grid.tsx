@@ -33,7 +33,21 @@ export interface BentoCardProps extends Omit<ComponentPropsWithoutRef<"div">, "c
   as?: "h2" | "h3" | "h4";
 }
 
-export function BentoCard({ name, className, background, Icon, description, href = "#", cta, onCtaClick, ctaLabel, variant = "default", extra, as: Title = "h3", ...props }: BentoCardProps) {
+export function BentoCard({
+  name,
+  className,
+  background,
+  Icon,
+  description,
+  href = "#",
+  cta,
+  onCtaClick,
+  ctaLabel,
+  variant = "default",
+  extra,
+  as: Title = "h3",
+  ...props
+}: BentoCardProps) {
   const image = variant === "image";
   const action = (
     <Button
@@ -45,9 +59,15 @@ export function BentoCard({ name, className, background, Icon, description, href
       onClick={onCtaClick}
     >
       {onCtaClick ? (
-        <span>{cta}<ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" aria-hidden="true" /></span>
+        <span>
+          {cta}
+          <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+        </span>
       ) : (
-        <a href={href}>{cta}<ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" aria-hidden="true" /></a>
+        <a href={href}>
+          {cta}
+          <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+        </a>
       )}
     </Button>
   );
@@ -62,13 +82,41 @@ export function BentoCard({ name, className, background, Icon, description, href
       )}
       {...props}
     >
-      <div className="absolute inset-0" aria-hidden={image ? undefined : true}>{background}</div>
-      {image && <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/5" aria-hidden="true" />}
+      <div className="absolute inset-0" aria-hidden={image ? undefined : true}>
+        {background}
+      </div>
+      {image && (
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/5"
+          aria-hidden="true"
+        />
+      )}
       <div className="relative z-10 p-5">
         <div className="pointer-events-none flex transform-gpu flex-col gap-1.5 transition-all duration-300 lg:group-hover:-translate-y-12 lg:group-focus-within:-translate-y-12">
-          <Icon className={cn("h-11 w-11 origin-left transform-gpu transition-all duration-300 ease-in-out group-hover:scale-75", image ? "text-white" : "text-foreground")} strokeWidth={1.5} aria-hidden="true" />
-          <Title className={cn("text-xl font-semibold leading-snug", image ? "text-white" : "text-foreground")}>{name}</Title>
-          <p className={cn("max-w-lg text-[15px] leading-relaxed", image ? "text-white/85" : "text-muted-foreground")}>{description}</p>
+          <Icon
+            className={cn(
+              "h-11 w-11 origin-left transform-gpu transition-all duration-300 ease-in-out group-hover:scale-75",
+              image ? "text-white" : "text-foreground",
+            )}
+            strokeWidth={1.5}
+            aria-hidden="true"
+          />
+          <Title
+            className={cn(
+              "text-xl font-semibold leading-snug",
+              image ? "text-white" : "text-foreground",
+            )}
+          >
+            {name}
+          </Title>
+          <p
+            className={cn(
+              "max-w-lg text-[15px] leading-relaxed",
+              image ? "text-white/85" : "text-muted-foreground",
+            )}
+          >
+            {description}
+          </p>
           {extra}
         </div>
         <div className="mt-3 flex lg:hidden">{action}</div>
@@ -76,7 +124,13 @@ export function BentoCard({ name, className, background, Icon, description, href
       <div className="pointer-events-none absolute bottom-0 z-20 hidden w-full translate-y-10 transform-gpu flex-row items-center p-5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 lg:flex">
         {action}
       </div>
-      <div className={cn("pointer-events-none absolute inset-0 transform-gpu transition-all duration-300", image ? "group-hover:bg-black/10" : "group-hover:bg-black/[.03]")} aria-hidden="true" />
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 transform-gpu transition-all duration-300",
+          image ? "group-hover:bg-black/10" : "group-hover:bg-black/[.03]",
+        )}
+        aria-hidden="true"
+      />
     </div>
   );
 }

@@ -23,18 +23,30 @@ export interface AnimatedGradientTextProps extends ComponentPropsWithoutRef<"spa
 }
 
 /** Text filled with a slowly moving two-color gradient (Magic UI pattern). Static when the user prefers reduced motion. */
-export function AnimatedGradientText({ children, className, style, speed = 1, duration = 3, tone = "light", colorFrom, colorTo, ...props }: AnimatedGradientTextProps) {
+export function AnimatedGradientText({
+  children,
+  className,
+  style,
+  speed = 1,
+  duration = 3,
+  tone = "light",
+  colorFrom,
+  colorTo,
+  ...props
+}: AnimatedGradientTextProps) {
   const preset = GRADIENT_PRESETS[tone];
   return (
     <span
       className={cn("animated-gradient-text", className)}
-      style={{
-        "--bg-size": `${Math.max(1, Math.round(speed * 2)) * 100}%`,
-        "--gradient-duration": `${duration}s`,
-        "--color-from": colorFrom ?? preset.colorFrom,
-        "--color-to": colorTo ?? preset.colorTo,
-        ...style,
-      } as CSSProperties}
+      style={
+        {
+          "--bg-size": `${Math.max(1, Math.round(speed * 2)) * 100}%`,
+          "--gradient-duration": `${duration}s`,
+          "--color-from": colorFrom ?? preset.colorFrom,
+          "--color-to": colorTo ?? preset.colorTo,
+          ...style,
+        } as CSSProperties
+      }
       {...props}
     >
       {children}

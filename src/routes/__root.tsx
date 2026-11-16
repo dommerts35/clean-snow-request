@@ -23,9 +23,7 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">{t.notFound.title}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t.notFound.text}
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{t.notFound.text}</p>
         <div className="mt-6">
           <Link
             to="/"
@@ -50,12 +48,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          {t.error.title}
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t.error.text}
-        </p>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">{t.error.title}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{t.error.text}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -84,7 +78,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "ClearView Solutions | Ventanas y nieve" },
-      { name: "description", content: "Limpieza de ventanas y retiro de nieve para hogares y negocios." },
+      {
+        name: "description",
+        content: "Limpieza de ventanas y retiro de nieve para hogares y negocios.",
+      },
       { property: "og:title", content: "ClearView Solutions | Ventanas y nieve" },
       { property: "og:description", content: "Cuidamos tu propiedad en cada estación." },
       { property: "og:type", content: "website" },
@@ -96,7 +93,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
