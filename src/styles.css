@@ -153,5 +153,5 @@ main:focus { outline: none; }
 .quote-form { position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 24px; background: var(--background); }
 @media(max-width:640px) { .quote-form { padding: 18px; } }
 /* Final call-to-action on the dither background */
-.final-dither { color: var(--hero-foreground); } .final-dither .final-band { padding-block: 80px 120px; } .final-dither .final-band p { color: oklch(0.99 0 0 / 80%); }
-@media(max-width:640px) { .final-dither .final-band { flex-direction: column; align-items: flex-start; padding-block: 56px 96px; } }
+.final-dither { color: var(--hero-foreground); } .final-dither .final-band { padding-block: 80px; } .final-dither .final-band p { color: oklch(0.99 0 0 / 80%); }
+@media(max-width:640px) { .final-dither .final-band { flex-direction: column; align-items: flex-start; padding-block: 56px; } }

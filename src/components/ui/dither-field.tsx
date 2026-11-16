@@ -1,10 +1,10 @@
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
-export type DitherPattern = "horizon" | "waves";
+export type DitherPattern = "horizon" | "glow" | "aurora" | "waves" | "clouds";
 
 export interface DitherFieldProps extends Omit<ComponentPropsWithoutRef<"div">, "color"> {
-  /** "horizon": light rising from the bottom edge. "waves": soft moving bands across the field. */
+  /** horizon: light rising from the bottom. glow: pulsing light in the center. aurora: drifting vertical curtains. waves: moving bands, brighter to the right. clouds: slow soft patches. */
   pattern?: DitherPattern;
   /** One color, or several from faint to bright (e.g. ["var(--dither-low)", "var(--dither-mid)", "var(--dither-high)"]). CSS variables are resolved. */
   color?: string | string[];
@@ -60,6 +60,14 @@ export function DitherField({ children, className, pattern = "horizon", color = 
         const ridge = 0.06 * Math.sin(u * 7 + t * 0.7) + 0.04 * Math.sin(u * 15 - t * 1.1);
         f = Math.pow(Math.max(0, v - 0.25 + ridge), 1.35) * 1.55;
         f += 0.06 * Math.sin(u * 22 + v * 9 - t * 1.6);
+      } else if (pattern === "glow") {
+        const dx = (u - 0.5) * (w / h), dy = v - 0.55;
+        f = (0.85 + 0.12 * Math.sin(t * 1.2)) * Math.exp(-(dx * dx + dy * dy) / 0.22);
+      } else if (pattern === "aurora") {
+        const band = Math.sin(u * 5 + Math.sin(v * 3 + t * 0.5) * 1.4 + t * 0.35);
+        f = (0.5 + 0.5 * band) * (1 - v) * 1.15 * (0.75 + 0.25 * Math.sin(u * 13 - t));
+      } else if (pattern === "clouds") {
+        f = 0.42 + 0.22 * Math.sin(u * 3.1 + t * 0.25) * Math.sin(v * 2.7 - t * 0.2) + 0.18 * Math.sin(u * 7.3 - v * 4.1 + t * 0.4) + 0.12 * Math.sin(u * 13 + v * 11 - t * 0.3);
       } else {
         f = 0.45 + 0.25 * Math.sin(u * 6 + t * 0.6) + 0.18 * Math.sin(v * 5 - t * 0.45 + u * 3) + 0.12 * Math.sin((u + v) * 9 + t * 0.9);
         f *= 0.2 + 0.8 * u;
