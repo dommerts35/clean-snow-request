@@ -62,7 +62,7 @@ export function QuoteForm({ initialService = SERVICE_VALUES[0] }: { initialServi
     const { error } = await supabase.from('quote_requests').insert({ name: String(data.get('name')), email: String(data.get('email')), service: toStoredService(String(data.get('service'))), property_type: toStoredProperty(String(data.get('property'))), address: String(data.get('address')), location: String(data.get('location')), details: String(data.get('details') ?? '') });
     setSending(false); if (error) { setFailed(true); return; } form.reset(); setReady(true); }
   return <form className="quote-form" onSubmit={submit} onInput={() => { setReady(false); setFailed(false); }}>
-    <BorderBeam size={180} duration={8}/>
+    <BorderBeam size={260} duration={4} borderWidth={3} colorFrom="oklch(0.8 0.2 145)" colorTo="oklch(0.55 0.2 250)"/>
     <label>{f.name}<Req t={t}/><input name="name" autoComplete="name" placeholder={f.namePh} maxLength={200} required aria-required="true"/></label>
     <label>{f.email}<Req t={t}/><input name="email" type="email" inputMode="email" autoComplete="email" placeholder={f.emailPh} maxLength={255} required aria-required="true"/></label>
     <label>{f.service}<Req t={t}/><select name="service" defaultValue={initialService} required aria-required="true">{SERVICE_VALUES.map(v => <option key={v} value={v}>{t.serviceLabels[v]}</option>)}</select></label>
