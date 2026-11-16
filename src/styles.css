@@ -195,3 +195,21 @@ main:focus { outline: none; }
 /* Dock labels: keep them above the hero and readable on photos */
 @media(min-width:641px) { .site-header { position: relative; z-index: 40; } }
 .dock-tip { background: var(--background); color: var(--foreground); border: 1px solid var(--border); box-shadow: 0 6px 18px oklch(0.16 0.035 172 / 25%); z-index: 50; }
+/* Infinite slider (src/components/ui/infinite-slider.tsx) */
+.infinite-slider { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.infinite-slider-track { display: flex; width: max-content; gap: var(--slider-gap); }
+.infinite-slider-group { display: flex; align-items: center; gap: var(--slider-gap); list-style: none; margin: 0; padding: 0; flex-shrink: 0; }
+.infinite-slider.is-vertical { -webkit-mask-image: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); }
+.infinite-slider.is-vertical .infinite-slider-track, .infinite-slider.is-vertical .infinite-slider-group { flex-direction: column; width: auto; }
+@media(prefers-reduced-motion:no-preference) {
+  .infinite-slider-track { animation: slider-x var(--slider-duration) linear infinite; }
+  .infinite-slider.is-vertical .infinite-slider-track { animation-name: slider-y; }
+  .infinite-slider.is-reverse .infinite-slider-track { animation-direction: reverse; }
+  .infinite-slider:hover .infinite-slider-track { animation-duration: var(--slider-duration-hover); }
+}
+@media(prefers-reduced-motion:reduce) { .infinite-slider { mask-image: none; -webkit-mask-image: none; } .infinite-slider-track { flex-wrap: wrap; width: auto; justify-content: center; } .infinite-slider-group.is-copy { display: none; } .infinite-slider-group { flex-wrap: wrap; justify-content: center; } }
+@keyframes slider-x { to { transform: translateX(calc(-50% - var(--slider-gap) / 2)); } }
+@keyframes slider-y { to { transform: translateY(calc(-50% - var(--slider-gap) / 2)); } }
+/* Trust strip as a slider */
+.trust-strip .trust-slider { padding-block: 22px; }
+.trust-strip .trust-slider .trust-item { white-space: nowrap; font-size: 15px; padding: 10px 18px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); }
