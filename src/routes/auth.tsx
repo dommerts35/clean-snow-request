@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SiteShell, pageMeta } from "@/components/clean-site";
 import { useI18n, usePageMeta } from "@/lib/i18n";
+import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 
 export const Route = createFileRoute("/auth")({
   head: () => pageMeta("auth"),
@@ -54,7 +55,7 @@ function AuthPage() {
       <section className="container-site section">
         <div className="auth-card">
           <div className="eyebrow">{a.eyebrow}</div>
-          <h1>{mode === "login" ? a.login : a.signup}</h1>
+          <h1><AnimatedGradientText>{mode === "login" ? a.login : a.signup}</AnimatedGradientText></h1>
           <p className="muted">{a.intro}</p>
           {sent ? (
             <p className="success-notice" role="status">{a.sent}</p>
@@ -63,7 +64,7 @@ function AuthPage() {
               {mode === "signup" && <div><Label htmlFor="name">{a.name}</Label><Input id="name" name="name" required autoComplete="name" /></div>}
               <div><Label htmlFor="email">{a.email}</Label><Input id="email" name="email" type="email" required autoComplete="email" /></div>
               <div><Label htmlFor="password">{a.password}</Label><Input id="password" name="password" type="password" minLength={6} required autoComplete={mode === "login" ? "current-password" : "new-password"} /></div>
-              <Button type="submit" disabled={busy}>{mode === "login" ? a.doLogin : a.doSignup}</Button>
+              <Button type="submit" disabled={busy}><AnimatedGradientText tone="onPrimary">{mode === "login" ? a.doLogin : a.doSignup}</AnimatedGradientText></Button>
             </form>
           )}
           <div className="auth-divider"><span>{a.or}</span></div>
