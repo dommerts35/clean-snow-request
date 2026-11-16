@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type FormEvent } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, Building2, Home, Mail, Users, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
+import { Building2, Home, Mail, Users, Check, Send, Grid2X2, House, Layers, Leaf, Menu, ShieldCheck, Snowflake, Sparkles, SprayCan, UserRound, X } from 'lucide-react';
 import { useSessionUser } from '@/hooks/use-account';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
