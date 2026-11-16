@@ -144,3 +144,11 @@ main:focus { outline: none; }
 @media(prefers-reduced-motion:no-preference) { .animated-gradient-text { animation: gradient-text var(--gradient-duration, 3s) linear infinite; } }
 @keyframes gradient-text { to { background-position: var(--bg-size, 200%) 0; } }
 @media (forced-colors: active) { .animated-gradient-text { -webkit-text-fill-color: currentColor; background: none; } }
+
+/* Border beam (src/components/ui/border-beam.tsx) */
+.border-beam { pointer-events: none; position: absolute; inset: 0; border-radius: inherit; border: calc(var(--border-width) * 1px) solid transparent; -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff); mask: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff); -webkit-mask-clip: padding-box, border-box; mask-clip: padding-box, border-box; -webkit-mask-composite: source-in; mask-composite: intersect; }
+.border-beam::after { content: ""; position: absolute; aspect-ratio: 1; width: calc(var(--size) * 1px); background: linear-gradient(to left, var(--color-from), var(--color-to), transparent); offset-anchor: calc(var(--anchor) * 1%) 50%; offset-path: rect(0 auto auto 0 round calc(var(--size) * 1px)); }
+@media(prefers-reduced-motion:no-preference) { .border-beam::after { animation: border-beam var(--duration) linear infinite; animation-delay: var(--delay); } }
+@keyframes border-beam { to { offset-distance: 100%; } }
+.quote-form { position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 24px; background: var(--background); }
+@media(max-width:640px) { .quote-form { padding: 18px; } }

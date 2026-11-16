@@ -9,6 +9,7 @@ import { PROPERTY_VALUES, SERVICE_VALUES, dictionaries, useI18n, type Dict, type
 import logoUrl from '@/assets/logo.svg';
 import { AnimatedGradientText } from '@/components/ui/animated-gradient-text';
 import { BentoCard, BentoGrid } from '@/components/ui/bento-grid';
+import { BorderBeam } from '@/components/ui/border-beam';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -61,6 +62,7 @@ export function QuoteForm({ initialService = SERVICE_VALUES[0] }: { initialServi
     const { error } = await supabase.from('quote_requests').insert({ name: String(data.get('name')), email: String(data.get('email')), service: toStoredService(String(data.get('service'))), property_type: toStoredProperty(String(data.get('property'))), address: String(data.get('address')), location: String(data.get('location')), details: String(data.get('details') ?? '') });
     setSending(false); if (error) { setFailed(true); return; } form.reset(); setReady(true); }
   return <form className="quote-form" onSubmit={submit} onInput={() => { setReady(false); setFailed(false); }}>
+    <BorderBeam size={180} duration={8}/>
     <label>{f.name}<Req t={t}/><input name="name" autoComplete="name" placeholder={f.namePh} maxLength={200} required aria-required="true"/></label>
     <label>{f.email}<Req t={t}/><input name="email" type="email" inputMode="email" autoComplete="email" placeholder={f.emailPh} maxLength={255} required aria-required="true"/></label>
     <label>{f.service}<Req t={t}/><select name="service" defaultValue={initialService} required aria-required="true">{SERVICE_VALUES.map(v => <option key={v} value={v}>{t.serviceLabels[v]}</option>)}</select></label>
