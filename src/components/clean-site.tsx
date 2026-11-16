@@ -497,7 +497,7 @@ export function Services() {
                 width={1536}
                 height={1024}
                 alt={c.alt}
-                className={`h-full w-full object-cover ${pos} group-hover:scale-105`}
+                className={`h-full w-full object-cover ${pos}`}
               />
             }
             extra={
