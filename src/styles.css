@@ -167,3 +167,7 @@ main:focus { outline: none; }
 .dock-tip { pointer-events: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translate(-50%, -4px); white-space: nowrap; border-radius: 6px; background: var(--overlay); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 8px; opacity: 0; transition: opacity .15s, transform .15s; z-index: 30; }
 .dock-link:hover .dock-tip, .dock-link:focus-visible .dock-tip { opacity: 1; transform: translate(-50%, 0); }
 @media(max-width:640px) { .site-dock { display: none; } .site-dock + .nav-links { display: none; } .site-dock + .nav-links.is-open { display: flex; } }
+/* About page: copy beside the globe */
+.about-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: center; padding-bottom: 40px; }
+.about-globe { margin: 0; display: grid; justify-items: center; gap: 10px; } .about-globe figcaption { font-size: 14px; font-weight: 600; color: var(--muted-foreground); }
+@media(max-width:900px) { .about-layout { grid-template-columns: 1fr; gap: 8px; } .about-globe canvas { max-width: 340px; } }
