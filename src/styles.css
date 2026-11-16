@@ -192,3 +192,6 @@ main:focus { outline: none; }
   75% { background-position: 50% 0%; }
 }
 @media (forced-colors: active) { .aurora-text { -webkit-text-fill-color: currentColor; background: none; } }
+/* Dock labels: keep them above the hero and readable on photos */
+@media(min-width:641px) { .site-header { position: relative; z-index: 40; } }
+.dock-tip { background: var(--background); color: var(--foreground); border: 1px solid var(--border); box-shadow: 0 6px 18px oklch(0.16 0.035 172 / 25%); z-index: 50; }
