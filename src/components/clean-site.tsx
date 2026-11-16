@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { PROPERTY_VALUES, SERVICE_VALUES, dictionaries, useI18n, type Dict, type PropertyValue, type ServiceValue } from '@/lib/i18n';
 import logoUrl from '@/assets/logo.svg';
 import { AnimatedGradientText } from '@/components/ui/animated-gradient-text';
+import { BentoCard, BentoGrid } from '@/components/ui/bento-grid';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -73,9 +74,18 @@ export function QuoteForm({ initialService = SERVICE_VALUES[0] }: { initialServi
   </form>;
 }
 export function Services() {
-  const { t } = useI18n(); const s = t.services;
-  const cards = [{ value: 'Limpieza de ventanas (residencial y comercial)' as const, icon: Grid2X2, img: heroPhoto, cls: '' }, { value: 'Lavado a presión' as const, icon: SprayCan, img: powerPhoto, cls: ' photo-action' }, { value: 'Limpieza de hogar' as const, icon: House, img: housePhoto, cls: ' photo-action photo-house' }, { value: 'Limpieza comercial y de negocios' as const, icon: Building2, img: commercialPhoto, cls: ' photo-action' }, { value: 'Varios servicios / paquete personalizado' as const, icon: Layers, img: snowPhoto, cls: '' }];
-  return <div className="service-grid">{cards.map(({ value, icon: Icon, img, cls }, i) => { const title = t.serviceLabels[value]; const c = s.items[value]; return <article className={`service-card${i === cards.length - 1 ? ' service-card-wide' : ''}`} key={value}><img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`service-image${cls}`}/><div className="service-body"><div className="service-title"><Icon size={25} strokeWidth={1.5} aria-hidden="true"/><h3>{title}</h3></div><p>{c.text}</p><ul className="service-list">{c.features.map(f => <li key={f}><Check aria-hidden="true"/>{f}</li>)}</ul><QuoteButton service={value} label={`${s.consultLabel}${title}`}>{s.consult}</QuoteButton></div></article>; })}</div>;
+  const { t } = useI18n(); const s = t.services; const open = useContext(QuoteContext);
+  const cards = [
+    { value: 'Limpieza de ventanas (residencial y comercial)' as const, icon: Grid2X2, img: heroPhoto, pos: 'object-[85%_47%]', span: 'lg:col-span-2' },
+    { value: 'Lavado a presión' as const, icon: SprayCan, img: powerPhoto, pos: 'object-[center_62%]', span: 'lg:col-span-1' },
+    { value: 'Limpieza de hogar' as const, icon: House, img: housePhoto, pos: 'object-[center_45%]', span: 'lg:col-span-1' },
+    { value: 'Limpieza comercial y de negocios' as const, icon: Building2, img: commercialPhoto, pos: 'object-[center_62%]', span: 'lg:col-span-2' },
+    { value: 'Varios servicios / paquete personalizado' as const, icon: Layers, img: snowPhoto, pos: 'object-[center_55%]', span: 'lg:col-span-3' },
+  ];
+  return <BentoGrid className="services-bento">{cards.map(({ value, icon, img, pos, span }) => { const title = t.serviceLabels[value]; const c = s.items[value];
+    return <BentoCard key={value} variant="image" className={span} name={title} description={c.text} Icon={icon} cta={s.consult} ctaLabel={`${s.consultLabel}${title}`} onCtaClick={() => open(value)}
+      background={<img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`h-full w-full object-cover ${pos} transition-transform duration-500 group-hover:scale-105`}/>}
+      extra={<ul className="mt-2 flex flex-wrap gap-2">{c.features.map(f => <li key={f} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[13px] font-medium text-white backdrop-blur-sm"><Check size={14} aria-hidden="true"/>{f}</li>)}</ul>}/>; })}</BentoGrid>;
 }
 export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2><AnimatedGradientText>{p.title}</AnimatedGradientText></h2></div><p>{p.l1}<br/>{p.l2}</p></div><ol className="process-grid">{p.steps.map(([title, text], i) => <li key={i}><span className="step-number" aria-hidden="true">0{i+1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>; }
 export function FinalCTA() { const { t } = useI18n(); return <section className="container-site final-band"><div><h2><AnimatedGradientText>{t.cta.title}</AnimatedGradientText></h2><p>{t.cta.text}</p></div><QuoteButton/></section>; }
