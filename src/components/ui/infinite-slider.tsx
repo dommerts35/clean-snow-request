@@ -1,4 +1,5 @@
-import { Children, useRef, type CSSProperties, type ReactNode } from "react";
+import { Children, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface InfiniteSliderProps {
@@ -15,6 +16,8 @@ export interface InfiniteSliderProps {
   /** Repeat the items inside each copy so short lists still fill wide screens (extra repeats are hidden from screen readers). */
   repeat?: number;
   className?: string;
+  /** Show a pause/play button (WCAG 2.2.2) with these accessible labels. */
+  pauseLabels?: { pause: string; play: string };
   /** Accessible name for the list of items. */
   "aria-label"?: string;
 }
@@ -33,6 +36,7 @@ export function InfiniteSlider({
   reverse = false,
   repeat = 1,
   className,
+  pauseLabels,
   ...aria
 }: InfiniteSliderProps) {
   const items = Children.toArray(children);
@@ -51,37 +55,55 @@ export function InfiniteSlider({
       );
   const hoverRate =
     durationOnHover === undefined ? 1 : durationOnHover === 0 ? 0 : duration / durationOnHover;
+  const [paused, setPaused] = useState(false);
+  const togglePause = () => {
+    setRate(paused ? 1 : 0);
+    setPaused(!paused);
+  };
   return (
-    <div
-      onPointerEnter={() => setRate(hoverRate)}
-      onPointerLeave={() => setRate(1)}
-      className={cn(
-        "infinite-slider overflow-hidden",
-        vertical && "is-vertical",
-        reverse && "is-reverse",
-        className,
-      )}
-      style={style}
-    >
-      <div ref={track} className="infinite-slider-track">
-        <ul className="infinite-slider-group" aria-label={aria["aria-label"]}>
-          {items.map((c, i) => (
-            <li key={i}>{c}</li>
-          ))}
-          {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) =>
-            items.map((c, i) => (
-              <li key={`r${r}-${i}`} aria-hidden="true">
-                {c}
-              </li>
-            )),
-          )}
-        </ul>
-        <ul className="infinite-slider-group is-copy" aria-hidden="true">
-          {Array.from({ length: Math.max(1, repeat) }, (_, r) =>
-            items.map((c, i) => <li key={`c${r}-${i}`}>{c}</li>),
-          )}
-        </ul>
+    <div className={cn("infinite-slider-wrap", className)}>
+      <div
+        onPointerEnter={() => !paused && setRate(hoverRate)}
+        onPointerLeave={() => !paused && setRate(1)}
+        className={cn(
+          "infinite-slider overflow-hidden",
+          vertical && "is-vertical",
+          reverse && "is-reverse",
+          paused && "is-paused",
+        )}
+        style={style}
+      >
+        <div ref={track} className="infinite-slider-track">
+          <ul className="infinite-slider-group" aria-label={aria["aria-label"]}>
+            {items.map((c, i) => (
+              <li key={i}>{c}</li>
+            ))}
+            {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) =>
+              items.map((c, i) => (
+                <li key={`r${r}-${i}`} aria-hidden="true">
+                  {c}
+                </li>
+              )),
+            )}
+          </ul>
+          <ul className="infinite-slider-group is-copy" aria-hidden="true">
+            {Array.from({ length: Math.max(1, repeat) }, (_, r) =>
+              items.map((c, i) => <li key={`c${r}-${i}`}>{c}</li>),
+            )}
+          </ul>
+        </div>
       </div>
+      {pauseLabels && (
+        <button
+          type="button"
+          className="infinite-slider-toggle"
+          aria-label={paused ? pauseLabels.play : pauseLabels.pause}
+          aria-pressed={paused}
+          onClick={togglePause}
+        >
+          {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
+        </button>
+      )}
     </div>
   );
 }

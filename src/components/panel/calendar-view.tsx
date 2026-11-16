@@ -231,8 +231,8 @@ function NewAppointment({
         ) : (
           <form onSubmit={submit} className="auth-form">
             <div>
-              <Label>{p.cal.client}</Label>
-              <select name="client" className="field" required>
+              <Label htmlFor="appt-client">{p.cal.client}</Label>
+              <select id="appt-client" name="client" className="field" required>
                 {clients.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.full_name || c.id}
@@ -242,8 +242,8 @@ function NewAppointment({
             </div>
             {role === "admin" && (
               <div>
-                <Label>{p.cal.worker}</Label>
-                <select name="worker" className="field" defaultValue={userId}>
+                <Label htmlFor="appt-worker">{p.cal.worker}</Label>
+                <select id="appt-worker" name="worker" className="field" defaultValue={userId}>
                   {workers.map((w) => (
                     <option key={w.id} value={w.id}>
                       {w.full_name}
@@ -253,8 +253,8 @@ function NewAppointment({
               </div>
             )}
             <div>
-              <Label>{p.cal.service}</Label>
-              <select name="service" className="field">
+              <Label htmlFor="appt-service">{p.cal.service}</Label>
+              <select id="appt-service" name="service" className="field">
                 {Object.keys(p.cal.services).map((v) => (
                   <option key={v} value={v}>
                     {p.cal.services[v]}
@@ -264,8 +264,9 @@ function NewAppointment({
             </div>
             <div className="field-row">
               <div>
-                <Label>{p.cal.date}</Label>
+                <Label htmlFor="appt-date">{p.cal.date}</Label>
                 <Input
+                  id="appt-date"
                   name="date"
                   type="date"
                   required
@@ -273,21 +274,28 @@ function NewAppointment({
                 />
               </div>
               <div>
-                <Label>{p.cal.time}</Label>
-                <Input name="time" type="time" required defaultValue="09:00" />
+                <Label htmlFor="appt-time">{p.cal.time}</Label>
+                <Input id="appt-time" name="time" type="time" required defaultValue="09:00" />
               </div>
               <div>
-                <Label>{p.cal.minutes}</Label>
-                <Input name="duration" type="number" min={15} step={15} defaultValue={60} />
+                <Label htmlFor="appt-duration">{p.cal.minutes}</Label>
+                <Input
+                  id="appt-duration"
+                  name="duration"
+                  type="number"
+                  min={15}
+                  step={15}
+                  defaultValue={60}
+                />
               </div>
             </div>
             <div>
-              <Label>{p.cal.address}</Label>
-              <Input name="address" placeholder={p.cal.addressPh} />
+              <Label htmlFor="appt-address">{p.cal.address}</Label>
+              <Input id="appt-address" name="address" placeholder={p.cal.addressPh} />
             </div>
             <div>
-              <Label>{p.cal.notes}</Label>
-              <Textarea name="notes" />
+              <Label htmlFor="appt-notes">{p.cal.notes}</Label>
+              <Textarea id="appt-notes" name="notes" />
             </div>
             <Button type="submit" disabled={create.isPending}>
               {p.cal.save}

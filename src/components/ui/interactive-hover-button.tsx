@@ -9,9 +9,10 @@ import { cn } from "@/lib/utils";
 export const InteractiveHoverButton = forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
->(({ children, className, ...props }, ref) => (
+>(({ children, className, type = "button", ...props }, ref) => (
   <button
     ref={ref}
+    type={type}
     className={cn(
       "group relative inline-flex min-h-11 w-auto cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-background px-6 py-2 text-center text-sm font-semibold text-foreground",
       "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] disabled:pointer-events-none disabled:opacity-60",

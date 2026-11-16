@@ -81,7 +81,11 @@ function Panel() {
     navigate({ to: "/auth", replace: true });
   }
   if (loading || !user || !role)
-    return <div className="container-site section muted">{p.loading}</div>;
+    return (
+      <div className="container-site section muted" role="status">
+        {p.loading}
+      </div>
+    );
   const staff = role !== "client";
   return (
     <div className="panel-page">

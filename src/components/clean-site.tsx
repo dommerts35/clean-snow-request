@@ -152,20 +152,6 @@ export function Brand() {
         clearview<span>.</span>
         <small>{t.brandTag}</small>
       </span>
-      <span
-        style={{
-          marginLeft: 8,
-          padding: "2px 8px",
-          borderRadius: 999,
-          background: "#f59e0b",
-          color: "#111",
-          fontSize: 12,
-          fontWeight: 700,
-          whiteSpace: "nowrap",
-        }}
-      >
-        (rama de prueba)
-      </span>
     </Link>
   );
 }
@@ -595,6 +581,7 @@ export function TrustStrip() {
         repeat={3}
         reverse
         className="trust-slider"
+        pauseLabels={{ pause: t.trust.pause, play: t.trust.play }}
       >
         {t.trust.items.map((text, i) => {
           const I = icons[i] ?? icons[0]!;

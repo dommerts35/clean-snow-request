@@ -72,7 +72,9 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
             const last = [...msgs].reverse().find((m) => m.client_id === c.id);
             return (
               <button
+                type="button"
                 key={c.id}
+                aria-current={active === c.id ? "true" : undefined}
                 className={`chat-item ${active === c.id ? "is-active" : ""}`}
                 onClick={() => setActive(c.id)}
               >
@@ -94,7 +96,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
               : p.chat.pickClient
             : p.chat.support}
         </h3>
-        <div className="chat-messages">
+        <div className="chat-messages" role="log" aria-live="polite" aria-relevant="additions">
           {active && thread.length === 0 && (
             <p className="muted">{staff ? p.chat.empty : p.chat.clientIntro}</p>
           )}
@@ -129,7 +131,8 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
                 </span>{" "}
                 {p.chat.ai}
               </small>
-              <p className="typing-dots" aria-label={p.chat.typing}>
+              <span className="sr-only">{p.chat.typing}</span>
+              <p className="typing-dots" aria-hidden="true">
                 <span />
                 <span />
                 <span />
@@ -144,6 +147,7 @@ export function ChatView({ role, userId }: { role: Role; userId: string }) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={p.chat.placeholder}
+              aria-label={p.chat.placeholder}
               maxLength={2000}
             />
             <Button type="submit" size="icon" aria-label={p.chat.send}>

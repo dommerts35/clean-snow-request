@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface WordRotateProps {
@@ -18,11 +18,14 @@ export interface WordRotateProps {
 export function WordRotate({ words, duration = 2500, className, render }: WordRotateProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  // Pauses while hovered so the current phrase can be read at leisure.
+  const hovered = useRef(false);
 
   useEffect(() => {
     if (words.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let swap: ReturnType<typeof setTimeout>;
     const tick = setInterval(() => {
+      if (hovered.current) return;
       setLeaving(true);
       swap = setTimeout(() => {
         setIndex((i) => (i + 1) % words.length);
@@ -40,6 +43,8 @@ export function WordRotate({ words, duration = 2500, className, render }: WordRo
   // no jump in width or height (e.g. when a longer phrase wraps to two lines) as words change.
   return (
     <span
+      onPointerEnter={() => (hovered.current = true)}
+      onPointerLeave={() => (hovered.current = false)}
       className={cn("word-rotate inline-grid overflow-hidden py-[0.1em] align-bottom", className)}
     >
       {words.map((w) => (

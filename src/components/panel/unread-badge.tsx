@@ -6,8 +6,9 @@ export function UnreadBadge({ count }: { count: number }) {
   const label = badgeLabel(count);
   if (!label) return null;
   return (
-    <span className="unread-badge" aria-label={p.chat.unread(label)}>
-      {label}
+    <span className="unread-badge">
+      <span aria-hidden="true">{label}</span>
+      <span className="sr-only">{p.chat.unread(label)}</span>
     </span>
   );
 }

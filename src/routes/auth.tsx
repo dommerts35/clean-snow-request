@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
-import { toast } from "sonner";
 import "@lovable.dev/cloud-auth-js/styles.css";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -24,6 +23,8 @@ function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  // Errors are shown inline (role="alert") next to the form instead of a passing toast.
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -41,9 +42,10 @@ function AuthPage() {
     const email = String(f.get("email"));
     const password = String(f.get("password"));
     setBusy(true);
+    setError(null);
     if (mode === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) toast.error(a.bad);
+      if (error) setError(a.bad);
     } else {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -53,7 +55,7 @@ function AuthPage() {
           data: { full_name: String(f.get("name")) },
         },
       });
-      if (error) toast.error(error.message);
+      if (error) setError(error.message);
       else if (!data.session) setSent(true);
     }
     setBusy(false);
@@ -63,7 +65,7 @@ function AuthPage() {
     const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin + "/auth",
     });
-    if (result.error) toast.error(a.socialFail);
+    if (result.error) setError(a.socialFail);
   }
 
   return (
@@ -80,7 +82,11 @@ function AuthPage() {
               {a.sent}
             </p>
           ) : (
-            <form onSubmit={submit} className="auth-form">
+            <form
+              onSubmit={submit}
+              className="auth-form"
+              aria-describedby={error ? "auth-error" : undefined}
+            >
               {mode === "signup" && (
                 <div>
                   <Label htmlFor="name">{a.name}</Label>
@@ -109,6 +115,11 @@ function AuthPage() {
               </Button>
             </form>
           )}
+          {error && (
+            <p id="auth-error" className="form-error" role="alert">
+              {error}
+            </p>
+          )}
           <div className="auth-divider">
             <span>{a.or}</span>
           </div>
@@ -117,7 +128,7 @@ function AuthPage() {
               {a.google}
             </Button>
             <button type="button" className="lovable-auth-button" onClick={() => social("lovable")}>
-              Continue with Lovable
+              {a.lovable}
             </button>
           </div>
           <button
@@ -126,6 +137,7 @@ function AuthPage() {
             onClick={() => {
               setMode(mode === "login" ? "signup" : "login");
               setSent(false);
+              setError(null);
             }}
           >
             {mode === "login" ? a.toSignup : a.toLogin}

@@ -137,6 +137,8 @@ const es = {
   },
   trust: {
     label: "Nuestro compromiso",
+    pause: "Pausar el desplazamiento",
+    play: "Reanudar el desplazamiento",
     items: [
       "Cuidado de tu propiedad",
       "Atención al detalle",
@@ -197,6 +199,7 @@ const es = {
     doSignup: "Crear cuenta",
     or: "o",
     google: "Continuar con Google",
+    lovable: "Continuar con Lovable",
     bad: "Correo o contraseña incorrectos.",
     socialFail: "No se pudo iniciar sesión.",
     toSignup: "¿No tienes cuenta? Regístrate",
@@ -343,6 +346,8 @@ const en: Dict = {
   },
   trust: {
     label: "Our promise",
+    pause: "Pause scrolling",
+    play: "Resume scrolling",
     items: [
       "We respect your property",
       "Attention to detail",
@@ -398,6 +403,7 @@ const en: Dict = {
     doSignup: "Create account",
     or: "or",
     google: "Continue with Google",
+    lovable: "Continue with Lovable",
     bad: "Incorrect email or password.",
     socialFail: "We couldn’t sign you in.",
     toSignup: "Don’t have an account? Sign up",
