@@ -25,7 +25,7 @@ export const InteractiveHoverButton = forwardRef<HTMLButtonElement, ButtonHTMLAt
       </div>
       <div
         aria-hidden="true"
-        className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-primary-foreground opacity-0 transition-all duration-300 group-hover:-translate-x-5 group-hover:opacity-100 group-focus-visible:-translate-x-5 group-focus-visible:opacity-100"
+        className="absolute inset-0 z-10 flex translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-primary-foreground opacity-0 transition-all duration-300 px-6 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
       >
         <span>{children}</span>
         <ArrowRight className="h-4 w-4" />
