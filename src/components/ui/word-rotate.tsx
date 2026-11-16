@@ -30,9 +30,14 @@ export function WordRotate({ words, duration = 2500, className, render }: WordRo
   }, [words.length, duration]);
 
   const word = words[index % Math.max(1, words.length)] ?? "";
+  // Every word sits invisibly in the same grid cell, so the box always fits the longest one:
+  // no jump in width or height (e.g. when a longer phrase wraps to two lines) as words change.
   return (
-    <span className={cn("inline-block overflow-hidden py-[0.1em] align-bottom", className)}>
-      <span key={index} className={cn("word-rotate-item inline-block", leaving && "is-leaving")}>
+    <span className={cn("word-rotate inline-grid overflow-hidden py-[0.1em] align-bottom", className)}>
+      {words.map((w) => (
+        <span key={`size-${w}`} className="word-rotate-cell invisible" aria-hidden="true">{render ? render(w) : w}</span>
+      ))}
+      <span key={index} className={cn("word-rotate-cell word-rotate-item", leaving && "is-leaving")}>
         {render ? render(word) : word}
       </span>
     </span>

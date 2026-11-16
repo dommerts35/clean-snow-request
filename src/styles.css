@@ -222,3 +222,5 @@ main:focus { outline: none; }
 .dither-placeholder.is-done { opacity: 0; }
 @keyframes dither-in { from { opacity: 0; } to { opacity: 1; } }
 @media(prefers-reduced-motion:reduce) { .dither-img, .dither-placeholder { transition-duration: .01ms !important; } .dither-img.is-loading { filter: none; } }
+.word-rotate-cell { grid-area: 1 / 1; align-self: end; }
+@media(min-width:901px) { .hero h1 { max-width: 780px; } }
