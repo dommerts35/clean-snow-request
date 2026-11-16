@@ -182,3 +182,14 @@ main:focus { outline: none; }
 @keyframes word-rotate-in { from { opacity: 0; transform: translateY(-50%); } to { opacity: 1; transform: translateY(0); } }
 @keyframes word-rotate-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(50%); } }
 .hero h1 > span[aria-hidden] { color: inherit; }
+/* Aurora text (src/components/ui/aurora-text.tsx) */
+.aurora-text { position: relative; display: inline-block; background-size: 200% auto; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+@media(prefers-reduced-motion:no-preference) { .aurora-text { animation: aurora 8s ease-in-out infinite alternate; } }
+@keyframes aurora {
+  0% { background-position: 0% 50%; transform: rotate(-2deg) scale(.97); }
+  25% { background-position: 50% 100%; transform: rotate(2deg) scale(1.03); }
+  50% { background-position: 100% 50%; transform: rotate(-1deg) scale(.98); }
+  75% { background-position: 50% 0%; transform: rotate(1deg) scale(1.02); }
+  100% { background-position: 0% 50%; transform: rotate(-2deg) scale(.97); }
+}
+@media (forced-colors: active) { .aurora-text { -webkit-text-fill-color: currentColor; background: none; } }
