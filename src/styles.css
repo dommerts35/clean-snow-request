@@ -174,3 +174,10 @@ main:focus { outline: none; }
 /* Quote buttons (InteractiveHoverButton) keep the brand green outline */
 .site-header .header-cta, .hero-actions > button, .final-band > button { border-color: var(--primary); }
 .hero-actions > button { height: 49px; }
+/* Word rotate (src/components/ui/word-rotate.tsx) */
+@media(prefers-reduced-motion:no-preference) {
+  .word-rotate-item { animation: word-rotate-in .3s ease-out both; }
+  .word-rotate-item.is-leaving { animation: word-rotate-out .3s ease-in both; }
+}
+@keyframes word-rotate-in { from { opacity: 0; transform: translateY(-50%); } to { opacity: 1; transform: translateY(0); } }
+@keyframes word-rotate-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(50%); } }
