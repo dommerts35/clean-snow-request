@@ -1422,17 +1422,17 @@ main:focus {
   transition:
     opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     filter 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.5s ease;
+    transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .dither-img.after-placeholder {
-  transition-duration: 1s, 1s, 0.5s;
+  transition-duration: 1s, 1s, 1.6s;
 }
 .dither-img.is-loading {
   opacity: 0;
   filter: blur(10px);
 }
 .dither-img.is-cached {
-  transition: transform 0.5s ease;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .dither-placeholder {
   animation: dither-in 0.4s ease-out backwards;
