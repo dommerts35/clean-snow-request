@@ -140,7 +140,7 @@ main:focus { outline: none; }
 .chat-item-name { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 
 /* Animated gradient text (src/components/ui/animated-gradient-text.tsx) */
-.animated-gradient-text { display: inline; background-image: linear-gradient(90deg, var(--color-from), var(--color-to), var(--color-from)); background-size: var(--bg-size, 300%) 100%; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-@media(prefers-reduced-motion:no-preference) { .animated-gradient-text { animation: gradient-text 8s linear infinite; } }
-@keyframes gradient-text { to { background-position: var(--bg-size, 300%) 0; } }
+.animated-gradient-text { display: inline; background-image: linear-gradient(90deg, var(--color-from), var(--color-to), var(--color-from)); background-size: var(--bg-size, 200%) 100%; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+@media(prefers-reduced-motion:no-preference) { .animated-gradient-text { animation: gradient-text var(--gradient-duration, 3s) linear infinite; } }
+@keyframes gradient-text { to { background-position: var(--bg-size, 200%) 0; } }
 @media (forced-colors: active) { .animated-gradient-text { -webkit-text-fill-color: currentColor; background: none; } }

@@ -12,8 +12,10 @@ export const GRADIENT_PRESETS = {
 } as const;
 
 export interface AnimatedGradientTextProps extends ComponentPropsWithoutRef<"span"> {
-  /** Higher = the gradient band is wider and moves more slowly across the text. */
+  /** Width of the gradient relative to the text (1 = two color bands visible at once). */
   speed?: number;
+  /** Seconds for one full color cycle; lower = faster. */
+  duration?: number;
   colorFrom?: string;
   colorTo?: string;
   /** Shortcut for a preset color pair; colorFrom/colorTo win when given. */
@@ -21,13 +23,14 @@ export interface AnimatedGradientTextProps extends ComponentPropsWithoutRef<"spa
 }
 
 /** Text filled with a slowly moving two-color gradient (Magic UI pattern). Static when the user prefers reduced motion. */
-export function AnimatedGradientText({ children, className, style, speed = 1, tone = "light", colorFrom, colorTo, ...props }: AnimatedGradientTextProps) {
+export function AnimatedGradientText({ children, className, style, speed = 1, duration = 3, tone = "light", colorFrom, colorTo, ...props }: AnimatedGradientTextProps) {
   const preset = GRADIENT_PRESETS[tone];
   return (
     <span
       className={cn("animated-gradient-text", className)}
       style={{
-        "--bg-size": `${speed * 300}%`,
+        "--bg-size": `${Math.max(1, Math.round(speed * 2)) * 100}%`,
+        "--gradient-duration": `${duration}s`,
         "--color-from": colorFrom ?? preset.colorFrom,
         "--color-to": colorTo ?? preset.colorTo,
         ...style,
