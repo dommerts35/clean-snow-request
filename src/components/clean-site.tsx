@@ -14,6 +14,7 @@ import { DitherField } from '@/components/ui/dither-field';
 import { Dock, DockIcon } from '@/components/ui/dock';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { InfiniteSlider } from '@/components/ui/infinite-slider';
+import { DitherImage } from '@/components/ui/dither-image';
 import { FeaturesSectionWithHoverEffects } from '@/components/blocks/feature-section-with-hover-effects';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
@@ -104,7 +105,7 @@ export function Services() {
   ];
   return <BentoGrid className="services-bento">{cards.map(({ value, icon, img, pos, span }) => { const title = t.serviceLabels[value]; const c = s.items[value];
     return <BentoCard key={value} variant="image" className={span} name={title} description={c.text} Icon={icon} cta={s.consult} ctaLabel={`${s.consultLabel}${title}`} onCtaClick={() => open(value)}
-      background={<img src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`h-full w-full object-cover ${pos} transition-transform duration-500 group-hover:scale-105`}/>}
+      background={<DitherImage wrapperClassName="h-full w-full" src={img} loading="lazy" width={1536} height={1024} alt={c.alt} className={`h-full w-full object-cover ${pos} transition-transform duration-500 group-hover:scale-105`}/>}
       extra={<ul className="mt-2 flex flex-wrap gap-2">{c.features.map(f => <li key={f} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[13px] font-medium text-white backdrop-blur-sm"><Check size={14} aria-hidden="true"/>{f}</li>)}</ul>}/>; })}</BentoGrid>;
 }
 export function Process() { const { t } = useI18n(); const p = t.process; return <section className="process-band"><div className="container-site section"><div className="section-heading"><div><div className="eyebrow">{p.eyebrow}</div><h2><AnimatedGradientText>{p.title}</AnimatedGradientText></h2></div><p>{p.l1}<br/>{p.l2}</p></div><FeaturesSectionWithHoverEffects columns={3} features={p.steps.map(([title, text], i) => { const Icon = [MessageSquare, CalendarCheck, Sparkles][i] ?? Sparkles; return { title, description: text, icon: <Icon size={28} strokeWidth={1.6}/> }; })}/></div></section>; }

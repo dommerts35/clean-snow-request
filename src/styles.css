@@ -213,3 +213,4 @@ main:focus { outline: none; }
 .trust-strip .trust-slider { padding-block: 22px; }
 .trust-strip .trust-slider .trust-item { white-space: nowrap; font-size: 15px; padding: 10px 18px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); }
 @media(prefers-reduced-motion:reduce) { .infinite-slider-group > li[aria-hidden] { display: none; } }
+.dither-img { transition: opacity .5s ease, transform .5s ease; } .dither-img.is-loading { opacity: 0; }
