@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { isLand } from "./globe-land";
 
 export interface GlobeMarker {
   /** [latitude, longitude] in degrees. */
@@ -13,8 +14,10 @@ export interface GlobeProps {
   markers?: GlobeMarker[];
   /** [latitude, longitude] turned toward the viewer at start. Defaults to the first marker. */
   focus?: [number, number];
-  /** Number of dots on the sphere. */
+  /** Dots spread over the whole sphere before keeping only land (more = finer map). */
   dots?: number;
+  /** Color of the sphere behind the dots. */
+  baseColor?: string;
   dotColor?: string;
   markerColor?: string;
   glowColor?: string;
@@ -28,7 +31,7 @@ const DEG = Math.PI / 180;
  * Magic UI-style dotted globe that slowly turns and can be dragged. Canvas-based, no dependencies.
  * Still when the user prefers reduced motion; pauses off-screen.
  */
-export function Globe({ className, markers = [{ location: [40.81, -74.22], size: 1 }], focus, dots = 2600, dotColor = "oklch(0.38 0.07 165)", markerColor = "oklch(0.78 0.15 145)", glowColor = "oklch(0.78 0.15 145 / 0.18)", speed = 1 }: GlobeProps) {
+export function Globe({ className, markers = [{ location: [40.81, -74.22], size: 1 }], focus, dots = 12000, baseColor = "oklch(0.97 0.012 160)", dotColor = "oklch(0.38 0.07 165)", markerColor = "oklch(0.78 0.15 145)", glowColor = "oklch(0.78 0.15 145 / 0.18)", speed = 1 }: GlobeProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const markerKey = JSON.stringify(markers);
   const focusKey = JSON.stringify(focus ?? markers[0]?.location ?? [20, 0]);
@@ -47,7 +50,8 @@ export function Globe({ className, markers = [{ location: [40.81, -74.22], size:
     const golden = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < dots; i++) {
       const y = 1 - (i / (dots - 1)) * 2, r = Math.sqrt(1 - y * y), a = golden * i;
-      pts.push([Math.cos(a) * r, y, Math.sin(a) * r]);
+      const x = Math.cos(a) * r, z = Math.sin(a) * r;
+      if (isLand(Math.asin(y) / DEG, Math.atan2(x, z) / DEG)) pts.push([x, y, z]);
     }
     const toVec = ([lat, lng]: [number, number]): [number, number, number] => [Math.cos(lat * DEG) * Math.sin(lng * DEG), Math.sin(lat * DEG), Math.cos(lat * DEG) * Math.cos(lng * DEG)];
     const mVecs = ms.map((m) => ({ v: toVec(m.location), s: m.size ?? 1 }));
@@ -72,12 +76,13 @@ export function Globe({ className, markers = [{ location: [40.81, -74.22], size:
       const g = ctx.createRadialGradient(c, c, R * 0.6, c, c, R * 1.08);
       g.addColorStop(0, "transparent"); g.addColorStop(1, glowColor);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c, c, R * 1.08, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = baseColor; ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = dotColor;
-      const dot = Math.max(1.5, W / 210);
+      const dot = Math.max(1.5, W / 230);
       for (const p of pts) {
         const [x, y, z] = project(p);
         if (z <= 0) continue;
-        ctx.globalAlpha = 0.2 + 0.8 * z;
+        ctx.globalAlpha = 0.25 + 0.75 * z;
         ctx.fillRect(c + x * R - dot / 2, c - y * R - dot / 2, dot, dot);
       }
       ctx.globalAlpha = 1;
@@ -119,7 +124,7 @@ export function Globe({ className, markers = [{ location: [40.81, -74.22], size:
       cv.removeEventListener("pointerdown", down); cv.removeEventListener("pointermove", move);
       cv.removeEventListener("pointerup", up); cv.removeEventListener("pointercancel", up);
     };
-  }, [markerKey, focusKey, dots, dotColor, markerColor, glowColor, speed]);
+  }, [markerKey, focusKey, dots, baseColor, dotColor, markerColor, glowColor, speed]);
 
   return <canvas ref={ref} aria-hidden="true" className={cn("aspect-square w-full max-w-[560px] cursor-grab touch-pan-y select-none", className)} />;
 }
