@@ -171,3 +171,6 @@ main:focus { outline: none; }
 .about-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: center; padding-bottom: 40px; }
 .about-globe { margin: 0; display: grid; justify-items: center; gap: 10px; } .about-globe figcaption { font-size: 14px; font-weight: 600; color: var(--muted-foreground); }
 @media(max-width:900px) { .about-layout { grid-template-columns: 1fr; gap: 8px; } .about-globe canvas { max-width: 340px; } }
+/* Quote buttons (InteractiveHoverButton) keep the brand green outline */
+.site-header .header-cta, .hero-actions > button, .final-band > button { border-color: var(--primary); }
+.hero-actions > button { height: 49px; }

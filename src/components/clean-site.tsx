@@ -12,6 +12,7 @@ import { BentoCard, BentoGrid } from '@/components/ui/bento-grid';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { DitherField } from '@/components/ui/dither-field';
 import { Dock, DockIcon } from '@/components/ui/dock';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import heroPhoto from '@/assets/window-winter.jpg';
 import snowPhoto from '@/assets/snow-removal.jpg';
 import powerPhoto from '@/assets/power-washing.jpg';
@@ -21,7 +22,7 @@ import commercialPhoto from '@/assets/commercial-cleaning.jpg';
 const QuoteContext = createContext<(service?: ServiceValue) => void>(() => {});
 export function QuoteButton({ children, service, className, label }: { children?: ReactNode; service?: ServiceValue; className?: string; label?: string }) {
   const open = useContext(QuoteContext); const { t } = useI18n();
-  return <Button className={className} aria-label={label} onClick={() => open(service)}><AnimatedGradientText tone="onPrimary">{children ?? t.quote}</AnimatedGradientText><ArrowRight size={16} aria-hidden="true"/></Button>;
+  return <InteractiveHoverButton className={className} aria-label={label} onClick={() => open(service)}><AnimatedGradientText tone="onPrimary">{children ?? t.quote}</AnimatedGradientText></InteractiveHoverButton>;
 }
 function AccountLink({ onClick }: { onClick: () => void }) { const { user } = useSessionUser(); const { t } = useI18n(); return user ? <Link to="/panel" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.panel}</Link> : <Link to="/auth" className="account-link" onClick={onClick}><UserRound size={15} className="inline mr-1" aria-hidden="true"/>{t.nav.login}</Link>; }
 /** Desktop navigation as a magnifying dock; the text menu below stays for phones. */
