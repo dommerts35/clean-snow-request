@@ -12,6 +12,8 @@ export interface InfiniteSliderProps {
   direction?: "horizontal" | "vertical";
   /** Move right-to-left becomes left-to-right (or upward becomes downward). */
   reverse?: boolean;
+  /** Repeat the items inside each copy so short lists still fill wide screens (extra repeats are hidden from screen readers). */
+  repeat?: number;
   className?: string;
   /** Accessible name for the list of items. */
   "aria-label"?: string;
@@ -22,7 +24,7 @@ export interface InfiniteSliderProps {
  * slides by exactly one copy. The second copy is hidden from screen readers.
  * With reduced motion the items simply wrap and stay still.
  */
-export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHover, direction = "horizontal", reverse = false, className, ...aria }: InfiniteSliderProps) {
+export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHover, direction = "horizontal", reverse = false, repeat = 1, className, ...aria }: InfiniteSliderProps) {
   const items = Children.toArray(children);
   const vertical = direction === "vertical";
   const style = {
@@ -35,9 +37,10 @@ export function InfiniteSlider({ children, gap = 16, duration = 25, durationOnHo
       <div className="infinite-slider-track">
         <ul className="infinite-slider-group" aria-label={aria["aria-label"]}>
           {items.map((c, i) => <li key={i}>{c}</li>)}
+          {Array.from({ length: Math.max(0, repeat - 1) }, (_, r) => items.map((c, i) => <li key={`r${r}-${i}`} aria-hidden="true">{c}</li>))}
         </ul>
         <ul className="infinite-slider-group is-copy" aria-hidden="true">
-          {items.map((c, i) => <li key={i}>{c}</li>)}
+          {Array.from({ length: Math.max(1, repeat) }, (_, r) => items.map((c, i) => <li key={`c${r}-${i}`}>{c}</li>))}
         </ul>
       </div>
     </div>
