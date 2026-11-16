@@ -10,7 +10,7 @@ export interface AuroraTextProps {
   speed?: number;
 }
 
-/** Magic UI aurora text: shifting multi-color fill with a gentle sway. Still when reduced motion is preferred. */
+/** Magic UI aurora text: shifting multi-color fill (no movement of the letters). Still when reduced motion is preferred. */
 export const AuroraText = memo(function AuroraText({ children, className, colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"], speed = 1 }: AuroraTextProps) {
   const style = {
     backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
